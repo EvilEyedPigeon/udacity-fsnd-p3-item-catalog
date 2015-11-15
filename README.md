@@ -1,4 +1,8 @@
-rdb-fullstack
-=============
+Project 2: Item Catalog
+=======================
 
-Common code for the Relational Databases and Full Stack Fundamentals courses
+Web application to keep track of items and group them in categories.
+
+Will use third party user registration and authentication. Authenticated users will have the ability to post, edit, and delete their own items.
+
+Initial [Vagrant](https://www.vagrantup.com/) config cloned from https://github.com/udacity/fullstack-nanodegree-vm
