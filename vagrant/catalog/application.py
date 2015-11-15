@@ -1,7 +1,13 @@
 from flask import Flask
 from flask import render_template
 
+import json
+
 app = Flask(__name__)
+
+# Temporary, for testing
+catalog = ["Phone", "Book", "Blue pen", "Banana"]
+
 
 @app.route("/hello/")
 def hello():
@@ -10,8 +16,11 @@ def hello():
 @app.route("/")
 @app.route("/catalog/")
 def show_catalog():
-	items = ["Phone", "Book", "Blue pen", "Banana"]
-	return render_template("catalog.html", items = items)
+	return render_template("catalog.html", items = catalog)
+
+@app.route('/catalog.json')
+def show_catalog_json():
+    return json.dumps(catalog)
 
 
 if __name__ == "__main__":
