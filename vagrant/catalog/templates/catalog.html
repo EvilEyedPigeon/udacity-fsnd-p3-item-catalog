@@ -1,0 +1,12 @@
+{% extends "main.html" %}
+{% block content %}
+
+<h1>Item catalog</h1>
+
+<ul>
+{% for i in items %}
+	<li>{{ i }}</li>
+{% endfor %}
+</ul>
+
+{% endblock %}
