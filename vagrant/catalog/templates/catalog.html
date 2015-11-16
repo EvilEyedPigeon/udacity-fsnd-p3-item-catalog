@@ -3,9 +3,19 @@
 
 <h1>Item catalog</h1>
 
+<a href="{{ url_for('hello') }}">Back to hello</a>
+
+<h2>Categories</h2>
+<ul>
+{% for c in categories %}
+	<li>{{ c.name }} ({{ c.id }})</li>
+{% endfor %}
+</ul>
+
+<h2>Items</h2>
 <ul>
 {% for i in items %}
-	<li>{{ i }}</li>
+	<li>{{ i }} ({{ i.id }})</li>
 {% endfor %}
 </ul>
 

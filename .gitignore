@@ -1,1 +1,3 @@
+*.pyc
 vagrant/.vagrant/
+vagrant/catalog/item_catalog.db
