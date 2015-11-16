@@ -8,8 +8,6 @@ from sqlalchemy.orm import sessionmaker
 
 from database_setup import Base, Category, Item
 
-import json
-
 app = Flask(__name__)
 
 
@@ -45,7 +43,10 @@ def view_catalog():
 
 @app.route('/catalog.json')
 def view_catalog_json():
-    return json.dumps(catalog)
+    categories = session.query(Category).all()
+    items = session.query(Item).all()
+    return jsonify(categories = [c.serialize for c in categories],
+    	items = [i.serialize for i in items])
 
 
 # Start the app
