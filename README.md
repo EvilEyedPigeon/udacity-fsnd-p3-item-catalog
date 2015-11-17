@@ -8,6 +8,12 @@ Will use third party user registration and authentication. Authenticated users w
 Initial [Vagrant](https://www.vagrantup.com/) config cloned from https://github.com/udacity/fullstack-nanodegree-vm
 
 
+TODO
+----
+
+- Show message when trying to view category that does not exist
+
+
 Usage
 -----
 

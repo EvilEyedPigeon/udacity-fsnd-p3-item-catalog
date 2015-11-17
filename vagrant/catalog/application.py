@@ -19,9 +19,6 @@ DBSession = sessionmaker(bind = engine)
 session = DBSession()
 
 
-# Temporary, for testing
-catalog = ["Phone", "Book", "Blue pen", "Banana"]
-
 
 @app.route("/hello/")
 def hello():
@@ -34,19 +31,41 @@ def hello():
     output += "</html>"
     return output
 
+
+
 @app.route("/")
 @app.route("/catalog/")
 def view_catalog():
+    """Catalog homepage."""
     categories = session.query(Category).all()
     items = session.query(Item).all()
-    return render_template("catalog.html", categories = categories, items = catalog)
+    return render_template("catalog.html", categories = categories, items = items)
 
-@app.route('/catalog.json')
+@app.route('/catalog/json/')
 def view_catalog_json():
+    """Catalog in json format."""
     categories = session.query(Category).all()
     items = session.query(Item).all()
     return jsonify(categories = [c.serialize for c in categories],
-    	items = [i.serialize for i in items])
+        items = [i.serialize for i in items])
+
+
+
+@app.route("/catalog/category/<int:category_id>/")
+def view_category(category_id):
+    """View a specific category."""
+    category = session.query(Category).filter_by(id = category_id).one()
+    items = session.query(Item).filter_by(category_id = category.id)
+    return render_template("category.html", category = category, items = items)
+
+@app.route("/catalog/category/<int:category_id>/json/")
+def view_category_json(category_id):
+    """Category in json format."""
+    category = session.query(Category).filter_by(id = category_id).one()
+    items = session.query(Item).filter_by(category_id = category.id)
+    return jsonify(category = category.serialize,
+        items = [i.serialize for i in items])
+
 
 
 # Start the app
