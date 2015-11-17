@@ -8,10 +8,22 @@ Will use third party user registration and authentication. Authenticated users w
 Initial [Vagrant](https://www.vagrantup.com/) config cloned from https://github.com/udacity/fullstack-nanodegree-vm
 
 
+References
+----------
+
+- [Python](https://www.python.org/)
+- [Flask](http://flask.pocoo.org/)
+- [SQLAlchemy](http://www.sqlalchemy.org/)
+- [SQLite](https://www.sqlite.org/)
+- [Google sign-in](https://developers.google.com/identity/sign-in/web/)
+
+
 TODO
 ----
 
-- Show message when trying to view category that does not exist
+- Show message when trying to view category or item that does not exist
+- Add, edit, and remove items
+- Add Google sign-in
 
 
 Usage
