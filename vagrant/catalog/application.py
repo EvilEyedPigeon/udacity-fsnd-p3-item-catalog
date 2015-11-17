@@ -62,9 +62,23 @@ def view_category(category_id):
 def view_category_json(category_id):
     """Category in json format."""
     category = session.query(Category).filter_by(id = category_id).one()
-    items = session.query(Item).filter_by(category_id = category.id)
+    items = session.query(Item).filter_by(category_id = category.id).all()
     return jsonify(category = category.serialize,
         items = [i.serialize for i in items])
+
+
+
+@app.route("/catalog/item/<int:item_id>/")
+def view_item(item_id):
+    """View a specific item."""
+    item = session.query(Item).filter_by(id = item_id).one()
+    return render_template("item.html", item = item)
+
+@app.route("/catalog/item/<int:item_id>/json/")
+def view_item_json(item_id):
+    """Item in json format."""
+    item = session.query(Item).filter_by(id = item_id).one()
+    return jsonify(item = item.serialize)
 
 
 

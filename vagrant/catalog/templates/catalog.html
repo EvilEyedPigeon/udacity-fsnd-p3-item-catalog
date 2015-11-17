@@ -24,7 +24,9 @@
 <h2>Items</h2>
 <ul>
 {% for i in items %}
-	<li>{{ i.name }} ({{ i.id }})</li>
+	<li>
+        <a href="{{ url_for('view_item', item_id = i.id) }}">{{ i.name }}</a> ({{ i.id }})
+    </li>
 {% endfor %}
 </ul>
 
