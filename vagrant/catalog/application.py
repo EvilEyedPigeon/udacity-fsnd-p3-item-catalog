@@ -31,6 +31,15 @@ def hello():
     output += "</html>"
     return output
 
+@app.route("/login/")
+def login():
+    return render_template("login.html")
+
+@app.route("/logout/")
+def logout():
+    # for now, just forward back to the catalog page
+    return redirect(url_for("view_catalog"))
+
 
 
 @app.route("/")
