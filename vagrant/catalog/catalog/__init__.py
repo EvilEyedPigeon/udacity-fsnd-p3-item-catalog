@@ -16,9 +16,7 @@ from database_setup import Base, Category, Item
 
 app = Flask(__name__)
 
-
 # Connect to database and create database session
-
 engine = create_engine('sqlite:///item_catalog.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind = engine)
@@ -222,17 +220,3 @@ def view_item_json(item_id):
     """Item in json format."""
     item = session.query(Item).filter_by(id = item_id).one()
     return jsonify(item = item.serialize)
-
-
-
-# Start the app
-if __name__ == "__main__":
-
-    # load client ids from config files
-    app.config.google_client_id = json.loads(open('client_secret_google.json', 'r').read())['web']['client_id']
-    print("google_client_id: " + app.config.google_client_id)
-
-    app.secret_key = 'super_secret_key'
-    app.debug = True
-    app.run(host = '0.0.0.0', port = 5000)
- 

@@ -1,0 +1,9 @@
+<div>
+    <p>
+    {% if 'username' in session %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+    {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+    {% endif %}
+    </p>
+</div>
