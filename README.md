@@ -33,5 +33,5 @@ Usage
 - Run populate_database.py
 - Download google client secret
   - Name it "client_secret_google.json" and place it in the catalog folder
-- Run applycation.py
+- Run runserver.py
 - Point browser to localhost:5000
