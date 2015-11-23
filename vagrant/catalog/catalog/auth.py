@@ -8,6 +8,7 @@ from flask import url_for
 from flask import session as login_session
 
 from catalog import app
+from catalog.models import get_user_id, get_user_info, create_user
 
 
 
@@ -110,6 +111,17 @@ def google_connect():
     login_session['username'] = data['name']
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
+
+    # see if user exists, if it doesn't make a new one
+    email = login_session['email']
+    user_id = get_user_id(email)
+    if not user_id:
+        user_id = create_user(login_session)
+        login_session['user_id'] = user_id
+        print "Welcome new user!"
+    else:
+        login_session['user_id'] = user_id
+        print "Welcome back old user!"
 
     output = '<h1>Welcome, ' + login_session['username'] + '!</h1>'
     output += '<p>' + login_session['email'] + '</p>'

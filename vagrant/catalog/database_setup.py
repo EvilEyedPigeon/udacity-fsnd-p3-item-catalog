@@ -10,13 +10,33 @@ Base = declarative_base()
 
 ##### classes/tables #####
 
+class User(Base):
+    """Application user."""
+
+    __tablename__ = 'users'
+
+    id = Column(Integer, primary_key = True)
+    name = Column(String(256), nullable = False)
+    email = Column(String(256), nullable = False)
+    picture = Column(String)    # picture url
+
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format."""
+        return {
+            'id'           : self.id,
+            'name'         : self.name,
+            'email'        : self.email,
+            'picture'      : self.picture
+        }
+
+
 class Category(Base):
     """Item category."""
 
     __tablename__ = "categories"
 
     id = Column(Integer, primary_key = True)
-
     name = Column(String(120), nullable = False)
 
     @property
@@ -34,11 +54,8 @@ class Item(Base):
     __tablename__ = "items"
 
     id = Column(Integer, primary_key = True)
-
     name = Column(String(120), nullable = False)
-
     category_id = Column(Integer, ForeignKey("categories.id"))
-
     category = relationship(Category)
 
     @property

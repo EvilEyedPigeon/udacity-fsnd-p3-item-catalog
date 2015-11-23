@@ -1,6 +1,7 @@
 <div>
     <p>
     {% if 'username' in session %}
+        You are logged in as {{ session['username'] }} ({{ session['email'] }})
         <a href="{{ url_for('logout') }}">Logout</a>
     {% else %}
         <a href="{{ url_for('login') }}">Login</a>

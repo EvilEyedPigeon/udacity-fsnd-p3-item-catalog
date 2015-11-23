@@ -12,17 +12,18 @@ from flask import session as login_session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from database_setup import Base, Category, Item
+from database_setup import Base, User, Category, Item
 
 app = Flask(__name__)
-
-import catalog.auth
 
 # Connect to database and create database session
 engine = create_engine('sqlite:///item_catalog.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind = engine)
-session = DBSession()
+db_session = DBSession()
+
+import catalog.models
+import catalog.auth
 
 
 
@@ -47,20 +48,23 @@ def hello():
 #     return redirect(url_for("google_disconnect"))
 
 
+################################################################################
+# Catalog
+################################################################################
 
 @app.route("/")
 @app.route("/catalog/")
 def view_catalog():
     """Catalog homepage."""
-    categories = session.query(Category).all()
-    items = session.query(Item).all()
+    categories = db_session.query(Category).all()
+    items = db_session.query(Item).all()
     return render_template("catalog.html", categories = categories, items = items)
 
 @app.route('/catalog/json/')
 def view_catalog_json():
     """Catalog in json format."""
-    categories = session.query(Category).all()
-    items = session.query(Item).all()
+    categories = db_session.query(Category).all()
+    items = db_session.query(Item).all()
     return jsonify(categories = [c.serialize for c in categories],
         items = [i.serialize for i in items])
 
@@ -69,15 +73,15 @@ def view_catalog_json():
 @app.route("/catalog/category/<int:category_id>/")
 def view_category(category_id):
     """View a specific category."""
-    category = session.query(Category).filter_by(id = category_id).one()
-    items = session.query(Item).filter_by(category_id = category.id)
+    category = db_session.query(Category).filter_by(id = category_id).one()
+    items = db_session.query(Item).filter_by(category_id = category.id)
     return render_template("category.html", category = category, items = items)
 
 @app.route("/catalog/category/<int:category_id>/json/")
 def view_category_json(category_id):
     """Category in json format."""
-    category = session.query(Category).filter_by(id = category_id).one()
-    items = session.query(Item).filter_by(category_id = category.id).all()
+    category = db_session.query(Category).filter_by(id = category_id).one()
+    items = db_session.query(Item).filter_by(category_id = category.id).all()
     return jsonify(category = category.serialize,
         items = [i.serialize for i in items])
 
@@ -86,11 +90,14 @@ def view_category_json(category_id):
 @app.route("/catalog/item/<int:item_id>/")
 def view_item(item_id):
     """View a specific item."""
-    item = session.query(Item).filter_by(id = item_id).one()
+    item = db_session.query(Item).filter_by(id = item_id).one()
     return render_template("item.html", item = item)
 
 @app.route("/catalog/item/<int:item_id>/json/")
 def view_item_json(item_id):
     """Item in json format."""
-    item = session.query(Item).filter_by(id = item_id).one()
+    item = db_session.query(Item).filter_by(id = item_id).one()
     return jsonify(item = item.serialize)
+
+
+################################################################################
