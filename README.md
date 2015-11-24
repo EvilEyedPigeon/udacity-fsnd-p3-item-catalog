@@ -21,9 +21,11 @@ References
 TODO
 ----
 
+- Add description to items
 - Show message when trying to view category or item that does not exist
-- Add, edit, and remove items
-- Add Google sign-in
+- Edit, and remove items
+- Add form validation
+- Cleanup Google sign-in
 
 
 Usage

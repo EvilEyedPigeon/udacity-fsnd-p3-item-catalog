@@ -1,0 +1,39 @@
+{% extends "main.html" %}
+{% block content %}
+
+<h1>New item</h1>
+
+<p>
+<a href="{{ url_for('view_catalog') }}">Back to catalog</a>
+</p>
+
+<!-- <dl>
+    <dt>Name:</dt>
+        <dd>{ item.name }}</dd>
+    <dt>Category:</dt>
+        <dd>{ item.category.name }}</dd>
+</ul>
+ -->
+<form method="POST" enctype="multipart/form-data" action="{{ url_for('new_item') }}">
+    <dl>
+        <dt><label for="name">Name:</label></dt>
+            <dd><input type="text" id="name" name="name"/></dd>
+        <dt><label for="description">Description:</label></dt>
+            <dd><input type="text" id="description" name="description"/></dd>
+        <dt><label for="category">Category:</dt>
+            <dd>
+                <select id="category" name="category_id">
+                    {% for c in categories %}
+                    <option value="{{ c.id }}">{{ c.name }}</option>
+                    {% endfor %}
+                </select>
+            </dd>
+    </dl>
+    <input type="submit" value="Create">
+</form>
+
+<p>
+<a href="{{ url_for('view_catalog') }}">Cancel</a><br/>
+</p>
+
+{% endblock %}
