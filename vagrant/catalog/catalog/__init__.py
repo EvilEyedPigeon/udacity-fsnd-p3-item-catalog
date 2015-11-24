@@ -108,14 +108,13 @@ def view_item_json(item_id):
 @app.route("/catalog/item/new/", methods = ['GET', 'POST'])
 def new_item():
     """Create new item."""
-    print "NEW ITEM"
     if request.method != 'POST':
         categories = db_session.query(Category).order_by(Category.name).all() # sort alphabetically
         return render_template('new_item.html', categories = categories)
-    print "CREATE ITEM"
-    print "name:", request.form['name']
-    print "category_id:", request.form['category_id']
-    new_item = Item(name = request.form['name'], category_id = request.form['category_id'])
+    new_item = Item(
+        name = request.form['name'],
+        description = request.form['description'],
+        category_id = request.form['category_id'])
     db_session.add(new_item)
     db_session.commit()
     return redirect(url_for('view_catalog'))

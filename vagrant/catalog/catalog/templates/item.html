@@ -18,6 +18,14 @@
 <dl>
     <dt>Name:</dt>
         <dd>{{ item.name }}</dd>
+    <dt>Description:</dt>
+        <dd>
+        {% if item.description %}
+            {{ item.description }}
+        {% else %}
+            &nbsp;
+        {% endif %}
+        </dd>
     <dt>Category:</dt>
         <dd>{{ item.category.name }}</dd>
 </ul>

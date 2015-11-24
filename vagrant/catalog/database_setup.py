@@ -55,6 +55,7 @@ class Item(Base):
 
     id = Column(Integer, primary_key = True)
     name = Column(String(120), nullable = False)
+    description = Column(String)
     category_id = Column(Integer, ForeignKey("categories.id"))
     category = relationship(Category)
 

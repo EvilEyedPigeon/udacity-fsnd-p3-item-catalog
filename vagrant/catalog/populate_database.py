@@ -18,6 +18,12 @@ def add_items(category, item_names):
 		session.add(item)
 	session.commit()
 
+def add_item(category, item):
+    """Add an item to a category."""
+    item.category_id = category.id
+    session.add(item)
+    session.commit()
+
 
 # Sample categories
 
@@ -38,14 +44,19 @@ session.commit()
 
 # Sample items
 
-item1_names = ["Data Structures and Network Algorithms", "Ender's Game", "Romeo and Juliet"]
-add_items(category1, item1_names)
+add_item(category1, Item(name = "Data Structures and Network Algorithms", description = "This is a great book!"))
+add_item(category1, Item(name = "Ender's Game", description = "Did you see the movie? I only read the book."))
+add_item(category1, Item(name = "Romeo and Juliet", description = "Classic love story."))
 
-item2_names = ["Smart phone", "Tablet", "Laptop", "DVD player"]
-add_items(category2, item2_names)
+add_item(category2, Item(name = "Smart phone", description = "Pretty cool phone."))
+add_item(category2, Item(name = "Tablet", description = "Who needs a computer?"))
+add_item(category2, Item(name = "DVD player", description = "Sorry, no blu-ray here, but still cool :)"))
 
-item3_names = ["Yellow banana", "Red apple", "Blue berry", "Orange orange"]
-add_items(category3, item3_names)
+add_item(category3, Item(name = "Banana", description = "This is a yellow banana."))
+add_item(category3, Item(name = "Apple", description = "This is a red apple."))
+add_item(category3, Item(name = "Orange", description = "This is an orange orange."))
 
-item4_names = ["Pen", "Pencil", "Notepad", "Playing cards"]
-add_items(category4, item4_names)
+add_item(category4, Item(name = "Pen", description = "A pen. Pretty useful for writing notes on paper."))
+add_item(category4, Item(name = "Pencil", description = "This can be pretty handy if you need to erase things you write."))
+add_item(category4, Item(name = "Notepad", description = "Combined with a pen or pencil, can be used to write anything you want."))
+add_item(category4, Item(name = "Playing cards", description = "Standard 52 card deck. What games do you like to play?"))

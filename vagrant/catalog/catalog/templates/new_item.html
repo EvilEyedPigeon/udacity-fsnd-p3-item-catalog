@@ -17,9 +17,13 @@
 <form method="POST" enctype="multipart/form-data" action="{{ url_for('new_item') }}">
     <dl>
         <dt><label for="name">Name:</label></dt>
-            <dd><input type="text" id="name" name="name"/></dd>
+            <dd>
+                <input type="text" id="name" name="name" size="50"/>
+            </dd>
         <dt><label for="description">Description:</label></dt>
-            <dd><input type="text" id="description" name="description"/></dd>
+            <dd>
+                <textarea id="description" name="description" rows="5" cols="50"></textarea>
+            </dd>
         <dt><label for="category">Category:</dt>
             <dd>
                 <select id="category" name="category_id">
