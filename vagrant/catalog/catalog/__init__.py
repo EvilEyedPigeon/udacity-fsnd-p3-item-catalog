@@ -102,7 +102,7 @@ def view_item_json(item_id):
 
 
 ################################################################################
-# Create/edit items
+# Create/edit/delete items
 ################################################################################
 
 @app.route("/catalog/item/new/", methods = ['GET', 'POST'])
@@ -130,6 +130,17 @@ def edit_item(item_id):
     item.description = request.form['description']
     item.category_id = request.form['category_id']
     db_session.add(item)
+    db_session.commit()
+    return redirect(url_for('view_catalog'))
+
+@app.route("/catalog/item/<int:item_id>/delete/", methods = ['GET', 'POST'])
+def delete_item(item_id):
+    """Delete an item."""
+    item = db_session.query(Item).filter_by(id = item_id).one()
+    if request.method != 'POST':
+        categories = db_session.query(Category).order_by(Category.name).all() # sort alphabetically
+        return render_template('delete_item.html', item = item, categories = categories)
+    db_session.delete(item)
     db_session.commit()
     return redirect(url_for('view_catalog'))
 
