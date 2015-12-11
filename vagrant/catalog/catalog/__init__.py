@@ -119,5 +119,18 @@ def new_item():
     db_session.commit()
     return redirect(url_for('view_catalog'))
 
+@app.route("/catalog/item/<int:item_id>/edit/", methods = ['GET', 'POST'])
+def edit_item(item_id):
+    """Edit an item."""
+    item = db_session.query(Item).filter_by(id = item_id).one()
+    if request.method != 'POST':
+        categories = db_session.query(Category).order_by(Category.name).all() # sort alphabetically
+        return render_template('edit_item.html', item = item, categories = categories)
+    item.name = request.form['name']
+    item.description = request.form['description']
+    item.category_id = request.form['category_id']
+    db_session.add(item)
+    db_session.commit()
+    return redirect(url_for('view_catalog'))
 
 ################################################################################
