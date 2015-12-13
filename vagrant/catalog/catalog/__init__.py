@@ -11,9 +11,10 @@ app = Flask(__name__)
 engine = create_engine('sqlite:///item_catalog.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind = engine)
-db_session = DBSession()
+db = DBSession()
 
 # Import modules
 import catalog.views
 import catalog.models
 import catalog.auth
+import catalog.data

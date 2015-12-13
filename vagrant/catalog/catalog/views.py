@@ -1,3 +1,8 @@
+"""This module includes most of the routes for the app.
+
+It includes endpoints for viewing and modifying the catalog.
+"""
+
 import httplib2
 import requests
 import json
@@ -11,7 +16,7 @@ from flask import jsonify
 from flask import session as login_session
 
 from catalog import app
-from catalog import db_session
+from catalog import db
 from database_setup import Base, User, Category, Item
 
 
@@ -36,48 +41,24 @@ def hello():
 @app.route("/catalog/")
 def view_catalog():
     """Catalog homepage."""
-    categories = db_session.query(Category).all()
-    items = db_session.query(Item).all()
+    categories = db.query(Category).all()
+    items = db.query(Item).all()
     return render_template("catalog.html", categories = categories, items = items)
-
-@app.route('/catalog/json/')
-def view_catalog_json():
-    """Catalog in json format."""
-    categories = db_session.query(Category).all()
-    items = db_session.query(Item).all()
-    return jsonify(categories = [c.serialize for c in categories],
-        items = [i.serialize for i in items])
-
 
 
 @app.route("/catalog/category/<int:category_id>/")
 def view_category(category_id):
     """View a specific category."""
-    category = db_session.query(Category).filter_by(id = category_id).one()
-    items = db_session.query(Item).filter_by(category_id = category.id)
+    category = db.query(Category).filter_by(id = category_id).one()
+    items = db.query(Item).filter_by(category_id = category.id)
     return render_template("category.html", category = category, items = items)
-
-@app.route("/catalog/category/<int:category_id>/json/")
-def view_category_json(category_id):
-    """Category in json format."""
-    category = db_session.query(Category).filter_by(id = category_id).one()
-    items = db_session.query(Item).filter_by(category_id = category.id).all()
-    return jsonify(category = category.serialize,
-        items = [i.serialize for i in items])
-
 
 
 @app.route("/catalog/item/<int:item_id>/")
 def view_item(item_id):
     """View a specific item."""
-    item = db_session.query(Item).filter_by(id = item_id).one()
+    item = db.query(Item).filter_by(id = item_id).one()
     return render_template("item.html", item = item)
-
-@app.route("/catalog/item/<int:item_id>/json/")
-def view_item_json(item_id):
-    """Item in json format."""
-    item = db_session.query(Item).filter_by(id = item_id).one()
-    return jsonify(item = item.serialize)
 
 
 ################################################################################
@@ -88,7 +69,7 @@ def view_item_json(item_id):
 def new_item():
     """Create new item."""
     if request.method != 'POST':
-        categories = db_session.query(Category).order_by(Category.name).all() # sort alphabetically
+        categories = db.query(Category).order_by(Category.name).all() # sort alphabetically
         return render_template('new_item.html', categories = categories)
 
     # get image file
@@ -106,17 +87,17 @@ def new_item():
         description = request.form['description'],
         category_id = request.form['category_id'],
         image = img_filename)
-    db_session.add(new_item)
-    db_session.commit()
+    db.add(new_item)
+    db.commit()
 
     return redirect(url_for('view_item', item_id = new_item.id))
 
 @app.route("/catalog/item/<int:item_id>/edit/", methods = ['GET', 'POST'])
 def edit_item(item_id):
     """Edit an item."""
-    item = db_session.query(Item).filter_by(id = item_id).one()
+    item = db.query(Item).filter_by(id = item_id).one()
     if request.method != 'POST':
-        categories = db_session.query(Category).order_by(Category.name).all() # sort alphabetically
+        categories = db.query(Category).order_by(Category.name).all() # sort alphabetically
         return render_template('edit_item.html', item = item, categories = categories)
 
     # get image file
@@ -135,20 +116,20 @@ def edit_item(item_id):
     # only replace image if new image is uploaded
     if img_filename:
         item.image = img_filename
-    db_session.add(item)
-    db_session.commit()
+    db.add(item)
+    db.commit()
 
     return redirect(url_for('view_item', item_id = item.id))
 
 @app.route("/catalog/item/<int:item_id>/delete/", methods = ['GET', 'POST'])
 def delete_item(item_id):
     """Delete an item."""
-    item = db_session.query(Item).filter_by(id = item_id).one()
+    item = db.query(Item).filter_by(id = item_id).one()
     if request.method != 'POST':
-        categories = db_session.query(Category).order_by(Category.name).all() # sort alphabetically
+        categories = db.query(Category).order_by(Category.name).all() # sort alphabetically
         return render_template('delete_item.html', item = item, categories = categories)
-    db_session.delete(item)
-    db_session.commit()
+    db.delete(item)
+    db.commit()
     return redirect(url_for('view_catalog'))
 
 
