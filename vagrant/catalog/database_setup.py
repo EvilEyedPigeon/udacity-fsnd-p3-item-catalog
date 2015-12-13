@@ -1,5 +1,7 @@
+from datetime import datetime
+
 from sqlalchemy import Column, ForeignKey
-from sqlalchemy import Integer, String
+from sqlalchemy import Integer, String, DateTime
 from sqlalchemy.orm import relationship
 
 from sqlalchemy.ext.declarative import declarative_base
@@ -84,6 +86,10 @@ class Item(Base):
             ID of this item's category.
         category (Category):
             This item's category.
+        created (DateTime):
+            Date and time when item was created.
+        updated (DateTime):
+            Date and time of last update.
     """
     __tablename__ = "items"
 
@@ -91,8 +97,12 @@ class Item(Base):
     name = Column(String(120), nullable = False)
     description = Column(String)
     image = Column(String)
+    
     category_id = Column(Integer, ForeignKey("categories.id"))
     category = relationship(Category)
+    
+    created = Column(DateTime, default = datetime.utcnow)
+    updated = Column(DateTime, default = datetime.utcnow, onupdate = datetime.utcnow)
 
     @property
     def serialize(self):
