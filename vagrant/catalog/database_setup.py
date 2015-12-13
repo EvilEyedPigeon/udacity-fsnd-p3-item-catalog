@@ -11,14 +11,27 @@ Base = declarative_base()
 ##### classes/tables #####
 
 class User(Base):
-    """Application user."""
+    """Application user.
 
+    Attributes:
+        id (Integer): 
+            User ID.
+        name (String): 
+            User name.
+            Usually this includes the user's given name and last name.
+        email (String):
+            User email.
+        picture (String):
+            Picture URL.
+            The picture may be stored on an external server, for example,
+            when using third party authentication.
+    """
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key = True)
     name = Column(String(256), nullable = False)
     email = Column(String(256), nullable = False)
-    picture = Column(String)    # picture url
+    picture = Column(String)
 
     @property
     def serialize(self):
@@ -32,8 +45,14 @@ class User(Base):
 
 
 class Category(Base):
-    """Item category."""
+    """Item category.
 
+    Attributes:
+        id (Integer): 
+            Category ID.
+        name (String): 
+            Category name.
+    """
     __tablename__ = "categories"
 
     id = Column(Integer, primary_key = True)
@@ -49,13 +68,29 @@ class Category(Base):
 
 
 class Item(Base):
-    """Individual item."""
+    """Individual item.
 
+    Attributes:
+        id (Integer): 
+            Item ID.
+        name (String): 
+            Item name.
+        description (String):
+            Item description.
+        image (String):
+            Image file name.
+            The actual image is stored on the file system.
+        category_id (Integer):
+            ID of this item's category.
+        category (Category):
+            This item's category.
+    """
     __tablename__ = "items"
 
     id = Column(Integer, primary_key = True)
     name = Column(String(120), nullable = False)
     description = Column(String)
+    image = Column(String)
     category_id = Column(Integer, ForeignKey("categories.id"))
     category = relationship(Category)
 
@@ -65,6 +100,8 @@ class Item(Base):
         return {
             'id'            : self.id,
             'name'          : self.name,
+            'description'   : self.description,
+            'image'         : self.image,
             'category_id'   : self.category_id
         }
 
