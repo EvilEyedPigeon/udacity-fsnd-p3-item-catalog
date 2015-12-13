@@ -2,3 +2,5 @@
 vagrant/.vagrant/
 vagrant/catalog/item_catalog.db
 vagrant/catalog/client_secret_google.json
+vagrant/catalog/catalog/uploads/*.jpg
+vagrant/catalog/catalog/uploads/*.png

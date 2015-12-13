@@ -22,6 +22,8 @@ TODO
 ----
 
 - Add image to items
+- Add timestamp to items
+- Show newest items
 - Show message when trying to view category or item that does not exist
 - Prevent CSRF using token
 - Add form validation
@@ -29,12 +31,23 @@ TODO
 
 Done
 ----
+
 - Google sign-in
 - Create new item
 - Edit item
 - Remove item
 - Add description to items
 
+Questions
+---------
+
+- Store images in the database?
+
+Things to keep in mind
+----------------------
+
+- Note that images are accessible to the public (as long as the user knows the file name)
+- Images are never deleted
 
 Usage
 -----

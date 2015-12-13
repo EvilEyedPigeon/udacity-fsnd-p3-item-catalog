@@ -111,13 +111,26 @@ def new_item():
     if request.method != 'POST':
         categories = db_session.query(Category).order_by(Category.name).all() # sort alphabetically
         return render_template('new_item.html', categories = categories)
+
+    # get image file
+    form_file = request.files['image']
+    img_filename = None
+    if form_file:
+        filename = secure_filename(form_file.filename)
+        filename = generate_unique_filename(filename)
+        form_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        img_filename = filename
+
+    # create item
     new_item = Item(
         name = request.form['name'],
         description = request.form['description'],
-        category_id = request.form['category_id'])
+        category_id = request.form['category_id'],
+        image = img_filename)
     db_session.add(new_item)
     db_session.commit()
-    return redirect(url_for('view_catalog'))
+
+    return redirect(url_for('view_item', item_id = new_item.id))
 
 @app.route("/catalog/item/<int:item_id>/edit/", methods = ['GET', 'POST'])
 def edit_item(item_id):
@@ -126,12 +139,27 @@ def edit_item(item_id):
     if request.method != 'POST':
         categories = db_session.query(Category).order_by(Category.name).all() # sort alphabetically
         return render_template('edit_item.html', item = item, categories = categories)
+
+    # get image file
+    form_file = request.files['image']
+    img_filename = None
+    if form_file:
+        filename = secure_filename(form_file.filename)
+        filename = generate_unique_filename(filename)
+        form_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        img_filename = filename
+
+    # edit item
     item.name = request.form['name']
     item.description = request.form['description']
     item.category_id = request.form['category_id']
+    # only replace image if new image is uploaded
+    if img_filename:
+        item.image = img_filename
     db_session.add(item)
     db_session.commit()
-    return redirect(url_for('view_catalog'))
+
+    return redirect(url_for('view_item', item_id = item.id))
 
 @app.route("/catalog/item/<int:item_id>/delete/", methods = ['GET', 'POST'])
 def delete_item(item_id):
