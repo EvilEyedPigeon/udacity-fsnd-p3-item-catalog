@@ -204,11 +204,32 @@ def upload():
         filename = secure_filename(form_file.filename)
         filename = generate_unique_filename(filename)
         form_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    return redirect(url_for('view_file', filename = filename))
+    return redirect(url_for('view_image', filename = filename))
 
-@app.route("/file/<string:filename>/")
-def view_file(filename):
-    """View uploaded file."""
+
+@app.route("/image/<string:filename>/")
+def view_image(filename):
+    """View uploaded image."""
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+def get_image_url(filename):
+    """Get URL for an image file.
+
+    If no file is specified, returns a URL for a place holder image.
+
+    Note that this method does not check if the file actually exists.
+    """
+    if filename:
+        return url_for("view_image", filename = filename)
+    else:
+        return "https://placehold.it/300x300.png?text=No+image"
+
+################################################################################
+
+# Expose utility functions to templates
+# http://flask.pocoo.org/docs/0.10/templating/
+@app.context_processor
+def utility_processor():
+    return dict(get_image_url = get_image_url)
 
 ################################################################################

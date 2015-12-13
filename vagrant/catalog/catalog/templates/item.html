@@ -33,6 +33,8 @@
         </dd>
     <dt>Category:</dt>
         <dd>{{ item.category.name }}</dd>
+    <dt>Image:</dt>
+        <dd><img width="300" src="{{ get_image_url(item.image) }}"></dd>
 </ul>
 
 {% endblock %}
