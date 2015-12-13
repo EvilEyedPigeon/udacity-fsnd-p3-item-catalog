@@ -21,8 +21,9 @@ References
 TODO
 ----
 
+- Add image to items
 - Show message when trying to view category or item that does not exist
-- Edit, and remove items
+- Prevent CSRF using token
 - Add form validation
 - Cleanup Google sign-in
 
@@ -30,6 +31,8 @@ Done
 ----
 - Google sign-in
 - Create new item
+- Edit item
+- Remove item
 - Add description to items
 
 

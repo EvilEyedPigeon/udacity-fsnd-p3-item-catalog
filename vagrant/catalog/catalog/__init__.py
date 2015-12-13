@@ -144,4 +144,71 @@ def delete_item(item_id):
     db_session.commit()
     return redirect(url_for('view_catalog'))
 
+
+################################################################################
+# Image upload
+################################################################################
+
+import os
+import datetime
+import string
+import random
+import uuid
+from werkzeug import secure_filename
+from flask import send_from_directory
+
+app_dir = os.path.abspath(os.path.dirname(__file__))
+UPLOAD_FOLDER = os.path.join(app_dir, 'uploads')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+
+def generate_random_string():
+    """Generate a random string with alphabetic characters and digits."""
+    alpha = string.ascii_lowercase + string.ascii_uppercase + string.digits
+    rand_str = "".join(random.choice(alpha) for x in xrange(32))
+    return rand_str
+
+def generate_unique_filename(original_filename):
+    """Generate a unique name for a file.
+
+    The current implementation does not actually guarantee uniqueness,
+    but the probability of generating the same name twice is very low.
+
+    The generated file names include the date and time, and a random UUID.
+
+    Args:
+      original_filename: the original name of the file.
+    Returns:
+      A file name with the same extension as the original file, and
+      which is almost surely unique.
+    """
+    # keep file extension, in lower case
+    ext = os.path.splitext(original_filename)[1].strip().lower()
+
+    # current date and time
+    date_time = datetime.datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+
+    # generate random uuid
+    uuid_hex = uuid.uuid4().hex
+
+    filename = "_".join([date_time, uuid_hex, ext])
+    return filename
+
+@app.route("/upload/", methods = ['GET', 'POST'])
+def upload():
+    """Upload an image file."""
+    if request.method != 'POST':
+        return render_template('upload.html')
+    form_file = request.files['image']
+    if form_file:
+        filename = secure_filename(form_file.filename)
+        filename = generate_unique_filename(filename)
+        form_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    return redirect(url_for('view_file', filename = filename))
+
+@app.route("/file/<string:filename>/")
+def view_file(filename):
+    """View uploaded file."""
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
 ################################################################################
