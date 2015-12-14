@@ -1,9 +1,7 @@
 """This module includes routes for getting data from the app.
 
-It includes endpoints for getting catalog data in JSON format.
+It includes endpoints for getting catalog data in JSON format, and Atom feeds.
 """
-
-from flask import jsonify
 
 from catalog import app
 from catalog import db
@@ -13,6 +11,8 @@ from database_setup import User, Category, Item
 ################################################################################
 # JSON
 ################################################################################
+
+from flask import jsonify
 
 @app.route('/catalog.json')
 def view_catalog_json():
@@ -46,5 +46,49 @@ def users_json():
     """
     users = db.query(User).all()
     return jsonify(users = [u.serialize for u in users])
+
+
+################################################################################
+# Atom
+################################################################################
+#
+# See:
+#
+# Generating Feeds with Flask
+# http://flask.pocoo.org/snippets/10/
+#
+# Atom Syndication
+# http://werkzeug.pocoo.org/docs/0.11/contrib/atom/
+#
+################################################################################
+
+from urlparse import urljoin
+from flask import request
+from flask import url_for
+from werkzeug.contrib.atom import AtomFeed
+
+# Number of items to include in atom feed
+ATOM_FEED_SIZE = 5
+
+def make_external(url):
+    """Convert relative URL to absolute URL."""
+    return urljoin(request.url_root, url)
+
+@app.route('/recent.atom')
+def recent_atom_feed():
+    """Atom feed with recently created and updated items."""
+    feed = AtomFeed('Latest Items', 
+        feed_url = request.url, url = request.url_root)
+    items = db.query(Item).order_by(Item.updated).limit(ATOM_FEED_SIZE).all()
+    for item in items:
+        item_url = url_for('view_item', item_id = item.id)
+        feed.add(title = item.name,
+                 content = unicode(item.description),
+                 content_type = 'text',
+                 author = item.user.name,
+                 url = make_external(item_url),
+                 updated = item.updated,
+                 published = item.created)
+    return feed.get_response()
 
 ################################################################################

@@ -37,6 +37,7 @@ Done
 - Edit item
 - Remove item
 - Add description to items
+- Add Atom feed with recent items
 
 Questions
 ---------
