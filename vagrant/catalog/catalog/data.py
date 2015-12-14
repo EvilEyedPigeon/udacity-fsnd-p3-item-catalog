@@ -79,7 +79,7 @@ def recent_atom_feed():
     """Atom feed with recently created and updated items."""
     feed = AtomFeed('Latest Items', 
         feed_url = request.url, url = request.url_root)
-    items = db.query(Item).order_by(Item.updated).limit(ATOM_FEED_SIZE).all()
+    items = db.query(Item).order_by(Item.updated.desc()).limit(ATOM_FEED_SIZE).all()
     for item in items:
         item_url = url_for('view_item', item_id = item.id)
         feed.add(title = item.name,
