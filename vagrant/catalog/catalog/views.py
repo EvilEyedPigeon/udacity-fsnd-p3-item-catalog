@@ -37,13 +37,21 @@ def hello():
 # View catalog
 ################################################################################
 
+# Maximum number of recently created or modified items to show 
+LATEST_ITEMS_TO_SHOW = 10
+
 @app.route("/")
 @app.route("/catalog/")
 def view_catalog():
     """Catalog homepage."""
     categories = db.query(Category).all()
-    items = db.query(Item).all()
-    return render_template("catalog.html", categories = categories, items = items)
+    items = db.query(Item).order_by(Item.name).all()
+    latest_items = db.query(Item).order_by(Item.updated.desc()) \
+        .limit(LATEST_ITEMS_TO_SHOW).all()
+    return render_template("catalog.html", 
+        categories = categories,
+        items = items,
+        latest_items = latest_items)
 
 
 @app.route("/catalog/category/<int:category_id>/")
