@@ -90,6 +90,10 @@ class Item(Base):
             Date and time when item was created.
         updated (DateTime):
             Date and time of last update.
+        user_id (Integer):
+            ID of the user who created this item.
+        user (User):
+            The user who created this item.
     """
     __tablename__ = "items"
 
@@ -98,11 +102,14 @@ class Item(Base):
     description = Column(String)
     image = Column(String)
     
-    category_id = Column(Integer, ForeignKey("categories.id"))
+    category_id = Column(Integer, ForeignKey("categories.id"), nullable = False)
     category = relationship(Category)
     
     created = Column(DateTime, default = datetime.utcnow)
     updated = Column(DateTime, default = datetime.utcnow, onupdate = datetime.utcnow)
+
+    user_id = Column(Integer, ForeignKey("users.id"), nullable = False)
+    user = relationship(User)
 
     @property
     def serialize(self):
@@ -112,7 +119,8 @@ class Item(Base):
             'name'          : self.name,
             'description'   : self.description,
             'image'         : self.image,
-            'category_id'   : self.category_id
+            'category_id'   : self.category_id,
+            'user_id'       : self.user_id
         }
 
 
