@@ -13,7 +13,7 @@ from flask import redirect
 from flask import request
 from flask import url_for
 from flask import jsonify
-from flask import session as login_session
+from flask import session
 
 from catalog import app
 from catalog import db
@@ -86,7 +86,8 @@ def new_item():
         name = request.form['name'],
         description = request.form['description'],
         category_id = request.form['category_id'],
-        image = img_filename)
+        image = img_filename,
+        user_id = session['user_id'])
     db.add(new_item)
     db.commit()
 
