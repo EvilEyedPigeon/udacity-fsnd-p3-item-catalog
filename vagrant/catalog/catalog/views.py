@@ -19,6 +19,7 @@ from catalog import app
 from catalog import db
 from database_setup import Base, User, Category, Item
 
+from auth import login_required
 
 
 @app.route("/hello/")
@@ -74,6 +75,7 @@ def view_item(item_id):
 ################################################################################
 
 @app.route("/catalog/item/new/", methods = ['GET', 'POST'])
+@login_required
 def new_item():
     """Create new item."""
     if request.method != 'POST':
@@ -102,6 +104,7 @@ def new_item():
     return redirect(url_for('view_item', item_id = new_item.id))
 
 @app.route("/catalog/item/<int:item_id>/edit/", methods = ['GET', 'POST'])
+@login_required
 def edit_item(item_id):
     """Edit an item."""
     item = db.query(Item).filter_by(id = item_id).one()
@@ -131,6 +134,7 @@ def edit_item(item_id):
     return redirect(url_for('view_item', item_id = item.id))
 
 @app.route("/catalog/item/<int:item_id>/delete/", methods = ['GET', 'POST'])
+@login_required
 def delete_item(item_id):
     """Delete an item."""
     item = db.query(Item).filter_by(id = item_id).one()

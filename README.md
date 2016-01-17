@@ -28,6 +28,7 @@ TODO
 - Prevent CSRF using token
 - Add form validation
 - Cleanup Google sign-in
+- Use blueprints to organize project
 
 Done
 ----
@@ -37,7 +38,9 @@ Done
 - Edit item
 - Remove item
 - Add description to items
+- Add image to items (file upload)
 - Add Atom feed with recent items
+- Require login to add, edit, and delete items
 
 Questions
 ---------

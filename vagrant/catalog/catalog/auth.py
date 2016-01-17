@@ -23,6 +23,27 @@ def logout():
 
 
 ################################################################################
+# Utility functions
+################################################################################
+
+from functools import wraps
+
+# TODO(pt314): consider using Flask-Login
+# https://flask-login.readthedocs.org/en/latest/
+def login_required(func):
+    """Decorates a view to ensure that only logged in users can access it.
+
+    Redirects user to login page if the user is not logged in.
+    """
+    @wraps(func)
+    def login_required_route(*args, **kargs):
+        if 'username' not in login_session:
+            return redirect('/login')
+        return func(*args, **kargs)
+    return login_required_route
+
+
+################################################################################
 # GOOGLE sign-in
 ################################################################################
 
