@@ -22,18 +22,6 @@ from database_setup import Base, User, Category, Item
 from auth import login_required
 
 
-@app.route("/hello/")
-def hello():
-    output = "<html>"
-    output += "<body>"
-    output += "<p>Hello World!</p>"
-    output += "<p>Welcome to the item catalog web app :)</p>"
-    output += "<p><a href = " + url_for("view_catalog") + ">View catalog</a></p>"
-    output += "</body>"
-    output += "</html>"
-    return output
-
-
 ################################################################################
 # View catalog
 ################################################################################
