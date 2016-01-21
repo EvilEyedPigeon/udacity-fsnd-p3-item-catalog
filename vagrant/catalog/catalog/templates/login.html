@@ -42,7 +42,7 @@ function signInCallback(authResult) {
         if(result) {
             $('#result').html('Login Successful!</br>' + result + '</br>Redirecting...');
             setTimeout(function() {
-                window.location.href = '{{ url_for("hello") }}'
+                window.location.href = '{{ url_for("view_catalog") }}'
             }, 5000)
         }
         else if (authResult['error']) {
