@@ -183,18 +183,6 @@ def generate_unique_filename(original_filename):
     filename = "_".join([date_time, uuid_hex, ext])
     return filename
 
-@app.route("/upload/", methods = ['GET', 'POST'])
-def upload():
-    """Upload an image file."""
-    if request.method != 'POST':
-        return render_template('upload.html')
-    form_file = request.files['image']
-    if form_file:
-        filename = secure_filename(form_file.filename)
-        filename = generate_unique_filename(filename)
-        form_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    return redirect(url_for('view_image', filename = filename))
-
 
 @app.route("/image/<string:filename>/")
 def view_image(filename):
