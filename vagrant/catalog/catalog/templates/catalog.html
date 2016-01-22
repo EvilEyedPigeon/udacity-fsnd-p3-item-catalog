@@ -22,31 +22,41 @@
 </p>
 
 
-<h2>Categories</h2>
-<ul>
-{% for c in categories %}
-	<li>
-        <a href="{{ url_for('view_category', category_id = c.id) }}">{{ c.name }}</a> ({{ c.id }})
-    </li>
-{% endfor %}
-</ul>
+<div class="row">
 
-<h2>Latest items</h2>
-<ul>
-{% for i in latest_items %}
-    <li>
-        <a href="{{ url_for('view_item', item_id = i.id) }}">{{ i.name }}</a> ({{ i.id }})
-    </li>
-{% endfor %}
-</ul>
+<div class="col-sm-4">
+    <h2>Categories</h2>
+    <ul>
+    {% for c in categories %}
+    	<li>
+            <a href="{{ url_for('view_category', category_id = c.id) }}">{{ c.name }}</a> ({{ c.id }})
+        </li>
+    {% endfor %}
+    </ul>
+</div>
 
-<h2>All items</h2>
-<ul>
-{% for i in items %}
-	<li>
-        <a href="{{ url_for('view_item', item_id = i.id) }}">{{ i.name }}</a> ({{ i.id }})
-    </li>
-{% endfor %}
-</ul>
+<div class="col-sm-4">
+    <h2>Latest items</h2>
+    <ul>
+    {% for i in latest_items %}
+        <li>
+            <a href="{{ url_for('view_item', item_id = i.id) }}">{{ i.name }}</a> ({{ i.id }})
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+
+<div class="col-sm-4">
+    <h2>All items</h2>
+    <ul>
+    {% for i in items %}
+    	<li>
+            <a href="{{ url_for('view_item', item_id = i.id) }}">{{ i.name }}</a> ({{ i.id }})
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+
+</div>
 
 {% endblock %}
