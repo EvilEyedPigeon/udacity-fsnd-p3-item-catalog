@@ -1,17 +1,21 @@
 {% extends "main.html" %}
-{% block content %}
+
+{% block page_header %}
 
 <h1>Category: {{ category.name }}</h1>
 
 <p>
-<a href="{{ url_for('view_catalog') }}">Back to catalog</a>
+    <a class="col" href="{{ url_for('view_catalog') }}"><span class="glyphicon glyphicon-home"></span> Catalog home</a>
+    &nbsp;|&nbsp;
+    <a class="col" href="{{ url_for('view_category_json', category_id = category.id) }}"><span class="glyphicon glyphicon-download-alt"></span> Category JSON</a>
 </p>
 
-<p>
-<a href="{{ url_for('view_category_json', category_id = category.id) }}">View json</a>
-</p>
+{% endblock %}
 
-<h2>Items</h2>
+
+{% block content %}
+
+<h2>Items (x items)</h2>
 <ul>
 {% for i in items %}
 	<li>

@@ -1,26 +1,31 @@
 {% extends "main.html" %}
-{% block content %}
+
+{% block page_header %}
 
 <h1>Item catalog</h1>
-
-<p>Welcome to the item catalog web app :)</p>
-
+<p>Welcome to the item catalog web app!</p>
+<p>The perfect place to keep track of your items :)</p>
+<!--
 <p>
-<a href="{{ url_for('view_catalog_json') }}">View json</a>
+    <a class="col" href="{{ url_for('view_catalog_json') }}"><span class="glyphicon glyphicon-file"></span> Catalog JSON</a>
+    &nbsp;|&nbsp;
+    <a class="col" href="{{ url_for('recent_atom_feed') }}"><span class="glyphicon glyphicon-list"></span> Atom feed</a>
+    &nbsp;|&nbsp;
+    <a class="col" href="{{ url_for('new_item') }}"><span class="glyphicon glyphicon-plus"></span> Add item</a>
 </p>
+-->
 
-<p>
-<a href="{{ url_for('recent_atom_feed') }}">View atom feed</a>
-</p>
+{% endblock %}
 
-<p>
-<a href="{{ url_for('new_item') }}">Add item</a>
-</p>
 
+{% block content %}
 
 <div class="row">
 
 <div class="col-sm-4">
+<p>
+    <a class="col" href="{{ url_for('view_catalog_json') }}"><span class="glyphicon glyphicon-download-alt"></span> Catalog JSON</a>
+</p>
     <h2>Categories</h2>
     <ul>
     {% for c in categories %}
@@ -32,6 +37,9 @@
 </div>
 
 <div class="col-sm-4">
+<p>
+    <a class="col" href="{{ url_for('recent_atom_feed') }}"><span class="glyphicon glyphicon-list"></span> Atom feed</a>
+</p>
     <h2>Latest items</h2>
     <ul>
     {% for i in latest_items %}
@@ -43,6 +51,9 @@
 </div>
 
 <div class="col-sm-4">
+<p>
+    <a class="col" href="{{ url_for('new_item') }}"><span class="glyphicon glyphicon-plus"></span> Add item</a>
+</p>
     <h2>All items</h2>
     <ul>
     {% for i in items %}
