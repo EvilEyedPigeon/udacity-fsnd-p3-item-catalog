@@ -15,11 +15,11 @@
 
 {% block content %}
 
-<h2>Items (x items)</h2>
+<h2>Items ({{ category.items | count }} items)</h2>
 <ul>
 {% for i in items %}
 	<li>
-        <a href="{{ url_for('view_item', item_id = i.id) }}">{{ i.name }}</a> ({{ i.id }})
+        <a href="{{ url_for('view_item', item_id = i.id) }}">{{ i.name }}</a>
     </li>
 {% endfor %}
 </ul>

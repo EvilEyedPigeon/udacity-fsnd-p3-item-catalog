@@ -60,6 +60,8 @@ class Category(Base):
     id = Column(Integer, primary_key = True)
     name = Column(String(120), nullable = False)
 
+    items = relationship("Item")
+
     @property
     def serialize(self):
         """Return object data in easily serializeable format."""
@@ -103,13 +105,13 @@ class Item(Base):
     image = Column(String)
     
     category_id = Column(Integer, ForeignKey("categories.id"), nullable = False)
-    category = relationship(Category)
+    category = relationship("Category")
     
     created = Column(DateTime, default = datetime.utcnow)
     updated = Column(DateTime, default = datetime.utcnow, onupdate = datetime.utcnow)
 
     user_id = Column(Integer, ForeignKey("users.id"), nullable = False)
-    user = relationship(User)
+    user = relationship("User")
 
     @property
     def serialize(self):
