@@ -2,29 +2,42 @@ import httplib2
 import requests
 import json
 
-from flask import render_template
-from flask import redirect
-from flask import url_for
-from flask import session as login_session
+from flask import Blueprint
 from flask import flash
+from flask import redirect
+from flask import render_template
+from flask import session as login_session
+from flask import url_for
 
 from catalog import app
 from catalog.models import get_user_id, get_user_info, create_user
 
+auth = Blueprint('auth', __name__)
 
 
-@app.route("/login/")
-def login():
-    return render_template("login.html")
-
-@app.route("/logout/")
-def logout():
-    # for now, just disconnect from google
-    return redirect(url_for("google_disconnect"))
+# Temporary, for debugging.
+@auth.route('/clearSession')
+def clearSession():
+    login_session.clear()
+    return "Session cleared"
 
 
 ################################################################################
-# Utility functions
+# Aurthorization (login/logout)
+################################################################################
+
+@auth.route("/login/")
+def login():
+    return render_template("auth/login.html")
+
+@auth.route("/logout/")
+def logout():
+    # for now, just disconnect from google
+    return redirect(url_for("auth.google_disconnect"))
+
+
+################################################################################
+# Authentication (permissions)
 ################################################################################
 
 from functools import wraps
@@ -40,7 +53,7 @@ def login_required(func):
     def login_required_route(*args, **kargs):
         if 'username' not in login_session:
             flash(message = "You are not authorized to access this page. Please login.", category = "info")
-            return redirect('/login')
+            return redirect(url_for('auth.login'))
         return func(*args, **kargs)
     return login_required_route
 
@@ -56,13 +69,7 @@ from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 from oauth2client.client import OAuth2Credentials
 
-# Temporary, for debugging.
-@app.route('/clearSession')
-def clearSession():
-    login_session.clear()
-    return "Session cleared"
-
-@app.route("/google_connect", methods = ["POST"])
+@auth.route("/google_connect", methods = ["POST"])
 def google_connect():
     # Obtain authorization code
     code = request.data
@@ -154,7 +161,7 @@ def google_connect():
     return output
 
 
-@app.route('/google_disconnect')
+@auth.route('/google_disconnect')
 def google_disconnect():
     # Only disconnect a connected user.
     access_token = login_session.get('credentials')
