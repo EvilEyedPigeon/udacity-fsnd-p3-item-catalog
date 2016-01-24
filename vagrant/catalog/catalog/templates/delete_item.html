@@ -22,37 +22,35 @@
 {% block content %}
 
 <form method="POST" enctype="multipart/form-data" action="{{ url_for('delete_item', item_id = item.id) }}">
-    <dl>
-        <dt><label for="name">Name:</label></dt>
-            <dd>
-                <input type="text" id="name" name="name" size="50" value="{{ item.name }}" disabled/>
-            </dd>
-        <dt><label for="description">Description:</label></dt>
-            <dd>
-                <textarea id="description" name="description" rows="5" cols="50" disabled>{{ item.description }}</textarea>
-            </dd>
-        <dt><label for="category">Category:</dt>
-            <dd>
-                <select id="category" name="category_id" disabled>
-                    {% for c in categories %}
-                    <option value="{{ c.id }}" {% if item.category == c %}selected{% endif %}>{{ c.name }}</option>
-                    {% endfor %}
-                </select>
-            </dd>
-        <dt>Image:</dt>
-            <dd><img width="300" src="{{ get_image_url(item.image) }}"></dd>
-        <dt>Created by:</dt>
-            <dd>{{ item.user.name }}</dd>
-        <dt>Created on:</dt>
-            <dd>{{ item.created.strftime("%Y-%m-%d %H:%M:%S") }}</dd>
-        <dt>Last modified:</dt>
-            <dd>{{ item.updated.strftime("%Y-%m-%d %H:%M:%S") }}</dd>
-    </dl>
-    <input type="submit" value="Delete">
+    <div class="row">
+        <div class="col-sm-6">
+            <dl class="dl-horizontal">
+                <dt>Name:</dt>
+                    <dd>{{ item.name }}</dd>
+                <dt>Description:</dt>
+                    <dd>
+                    {% if item.description %}
+                        {{ item.description }}
+                    {% else %}
+                        &nbsp;
+                    {% endif %}
+                    </dd>
+                <dt>Category:</dt>
+                    <dd><a href="{{ url_for('view_category', category_id = item.category_id) }}">{{ item.category.name }}</a></dd>
+                <dt>Created by:</dt>
+                    <dd>{{ item.user.name }}</dd>
+                <dt>Created on:</dt>
+                    <dd>{{ item.created.strftime("%Y-%m-%d %H:%M:%S") }}</dd>
+                <dt>Last modified:</dt>
+                    <dd>{{ item.updated.strftime("%Y-%m-%d %H:%M:%S") }}</dd>
+            </dl>
+        </div>
+        <div class="col-sm-6 text-right">
+            <img width="300" src="{{ get_image_url(item.image) }}">
+        </div>
+    </div>
+    <input type="submit" class="btn btn-danger btn-block" value="Delete"/>
+    <a class="btn btn-default btn-block" href="{{ url_for('view_item', item_id = item.id) }}">Cancel</a><br/>
 </form>
-
-<p>
-<a href="{{ url_for('view_catalog') }}">Cancel</a><br/>
-</p>
 
 {% endblock %}
