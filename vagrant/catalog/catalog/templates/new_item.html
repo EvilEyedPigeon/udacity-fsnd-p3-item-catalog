@@ -14,33 +14,28 @@
 {% block content %}
 
 <form method="POST" enctype="multipart/form-data" action="{{ url_for('new_item') }}">
-    <dl>
-        <dt><label for="name">Name:</label></dt>
-            <dd>
-                <input type="text" id="name" name="name" size="50"/>
-            </dd>
-        <dt><label for="description">Description:</label></dt>
-            <dd>
-                <textarea id="description" name="description" rows="5" cols="50"></textarea>
-            </dd>
-        <dt><label for="category">Category:</dt>
-            <dd>
-                <select id="category" name="category_id">
-                    {% for c in categories %}
-                    <option value="{{ c.id }}">{{ c.name }}</option>
-                    {% endfor %}
-                </select>
-            </dd>
-        <dt><label for="image">Image:</dt>
-            <dd>
-                <input type="file" name="image">
-            </dd>
-    </dl>
-    <input type="submit" value="Create">
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input class="form-control" type="text" id="name" name="name" size="50"/>
+    </div>
+    <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea class="form-control" id="description" name="description" rows="5" cols="50"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="category">Category:</label>
+        <select class="form-control" id="category" name="category_id">
+            {% for c in categories %}
+            <option value="{{ c.id }}">{{ c.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="image">Image:</label>
+        <input class="form-control" type="file" name="image"/><br/>
+    </div>
+    <input type="submit" class="btn btn-primary btn-block" value="Save">
+    <a class="btn btn-default btn-block" href="{{ url_for('view_catalog') }}">Cancel</a><br/>
 </form>
-
-<p>
-<a href="{{ url_for('view_catalog') }}">Cancel</a><br/>
-</p>
 
 {% endblock %}
