@@ -173,9 +173,7 @@ def google_disconnect():
         # Reset the user's session.
         login_session.clear()
         flash(message = "You are now logged out.", category = "success")
-        response = make_response(json.dumps('Successfully disconnected.'), 200)
-        response.headers['Content-Type'] = 'application/json'
-        return response
+        return redirect(url_for('view_catalog'))
     else:
         # For whatever reason, the given token was invalid.
         response = make_response(
