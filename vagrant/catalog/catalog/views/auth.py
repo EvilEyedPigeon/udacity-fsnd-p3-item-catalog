@@ -1,3 +1,5 @@
+"""This module includes routes and functions for authentication and authorization."""
+
 import httplib2
 import requests
 import json

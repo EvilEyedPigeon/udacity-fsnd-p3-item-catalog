@@ -7,9 +7,9 @@
 <p>The perfect place to keep track of your items :)</p>
 <!--
 <p>
-    <a class="col" href="{{ url_for('view_catalog_json') }}"><span class="glyphicon glyphicon-file"></span> Catalog JSON</a>
+    <a class="col" href="{{ url_for('data.view_catalog_json') }}"><span class="glyphicon glyphicon-file"></span> Catalog JSON</a>
     &nbsp;|&nbsp;
-    <a class="col" href="{{ url_for('recent_atom_feed') }}"><span class="glyphicon glyphicon-list"></span> Atom feed</a>
+    <a class="col" href="{{ url_for('data.recent_atom_feed') }}"><span class="glyphicon glyphicon-list"></span> Atom feed</a>
     &nbsp;|&nbsp;
     <a class="col" href="{{ url_for('new_item') }}"><span class="glyphicon glyphicon-plus"></span> Add item</a>
 </p>
@@ -24,7 +24,7 @@
 
 <div class="col-sm-4">
 <p>
-    <a class="col" href="{{ url_for('view_catalog_json') }}"><span class="glyphicon glyphicon-download-alt"></span> Catalog JSON</a>
+    <a class="col" href="{{ url_for('data.view_catalog_json') }}"><span class="glyphicon glyphicon-download-alt"></span> Catalog JSON</a>
 </p>
     <h2>Categories</h2>
     <ul>
@@ -39,7 +39,7 @@
 
 <div class="col-sm-4">
 <p>
-    <a class="col" href="{{ url_for('recent_atom_feed') }}"><span class="glyphicon glyphicon-list"></span> Atom feed</a>
+    <a class="col" href="{{ url_for('data.recent_atom_feed') }}"><span class="glyphicon glyphicon-list"></span> Atom feed</a>
 </p>
     <h2>Latest items</h2>
     <ul>

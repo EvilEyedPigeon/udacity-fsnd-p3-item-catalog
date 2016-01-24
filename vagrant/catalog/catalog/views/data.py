@@ -3,9 +3,14 @@
 It includes endpoints for getting catalog data in JSON format, and Atom feeds.
 """
 
-from catalog import app
+from flask import Blueprint
+
 from catalog import db
 from database_setup import User, Category, Item
+
+from auth import login_required
+
+data = Blueprint('data', __name__)
 
 
 ################################################################################
@@ -14,7 +19,7 @@ from database_setup import User, Category, Item
 
 from flask import jsonify
 
-@app.route('/catalog.json')
+@data.route('/catalog.json')
 def view_catalog_json():
     """Catalog in json format."""
     categories = db.query(Category).all()
@@ -22,7 +27,7 @@ def view_catalog_json():
     return jsonify(categories = [c.serialize for c in categories],
         items = [i.serialize for i in items])
 
-@app.route("/catalog/category-<int:category_id>.json")
+@data.route("/catalog/category-<int:category_id>.json")
 def view_category_json(category_id):
     """Category in json format."""
     category = db.query(Category).filter_by(id = category_id).one()
@@ -30,19 +35,20 @@ def view_category_json(category_id):
     return jsonify(category = category.serialize,
         items = [i.serialize for i in items])
 
-@app.route("/catalog/item-<int:item_id>.json")
+@data.route("/catalog/item-<int:item_id>.json")
 def view_item_json(item_id):
     """Item in json format."""
     item = db.query(Item).filter_by(id = item_id).one()
     return jsonify(item = item.serialize)
 
-@app.route('/users.json')
+@data.route('/users.json')
+@login_required
 def users_json():
     """List of users in json format.
 
     This is for debugging and should probably be removed or protected.
 
-    TODO (pt314): Remove of protect this endpoint.
+    TODO (pt314): Remove or protect this endpoint.
     """
     users = db.query(User).all()
     return jsonify(users = [u.serialize for u in users])
@@ -74,7 +80,7 @@ def make_external(url):
     """Convert relative URL to absolute URL."""
     return urljoin(request.url_root, url)
 
-@app.route('/recent.atom')
+@data.route('/recent.atom')
 def recent_atom_feed():
     """Atom feed with recently created and updated items."""
     feed = AtomFeed('Latest Items', 

@@ -16,9 +16,10 @@ db = DBSession()
 # Import modules
 import catalog.views
 import catalog.models
-import catalog.data
 
 # Register blueprints
 from views.auth import auth
+from views.data import data
 
 app.register_blueprint(auth)
+app.register_blueprint(data)

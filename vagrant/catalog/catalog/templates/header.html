@@ -5,8 +5,8 @@
         </div>
         <ul class="nav navbar-nav">
             <li><a href="{{ url_for('view_catalog') }}"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-            <li><a href="{{ url_for('view_catalog_json') }}"><span class="glyphicon glyphicon-download-alt"></span> Catalog JSON</a></li>
-            <li><a href="{{ url_for('recent_atom_feed') }}"><span class="glyphicon glyphicon-list"></span> Atom feed</a></li>
+            <li><a href="{{ url_for('data.view_catalog_json') }}"><span class="glyphicon glyphicon-download-alt"></span> Catalog JSON</a></li>
+            <li><a href="{{ url_for('data.recent_atom_feed') }}"><span class="glyphicon glyphicon-list"></span> Atom feed</a></li>
             <li><a class="col" href="{{ url_for('new_item') }}"><span class="glyphicon glyphicon-plus"></span> Add item</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
