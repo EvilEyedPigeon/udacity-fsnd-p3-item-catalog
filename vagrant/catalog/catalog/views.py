@@ -14,6 +14,7 @@ from flask import request
 from flask import url_for
 from flask import jsonify
 from flask import session
+from flask import flash
 
 from catalog import app
 from catalog import db
@@ -89,6 +90,8 @@ def new_item():
     db.add(new_item)
     db.commit()
 
+    flash(message = "Item successfully created", category = "success")
+
     return redirect(url_for('view_item', item_id = new_item.id))
 
 @app.route("/catalog/item/<int:item_id>/edit/", methods = ['GET', 'POST'])
@@ -119,6 +122,8 @@ def edit_item(item_id):
     db.add(item)
     db.commit()
 
+    flash(message = "Item successfully updated", category = "success")
+
     return redirect(url_for('view_item', item_id = item.id))
 
 @app.route("/catalog/item/<int:item_id>/delete/", methods = ['GET', 'POST'])
@@ -131,6 +136,9 @@ def delete_item(item_id):
         return render_template('delete_item.html', item = item, categories = categories)
     db.delete(item)
     db.commit()
+
+    flash(message = "Item successfully removed", category = "success")
+
     return redirect(url_for('view_catalog'))
 
 

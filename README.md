@@ -22,8 +22,6 @@ TODO
 ----
 
 - Add image to items
-- Add timestamp to items
-- Show newest items
 - Show message when trying to view category or item that does not exist
 - Prevent CSRF using token
 - Add form validation
@@ -41,6 +39,7 @@ Done
 - Add image to items (file upload)
 - Add Atom feed with recent items
 - Require login to add, edit, and delete items
+- Add flash messages
 
 Questions
 ---------

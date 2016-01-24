@@ -6,6 +6,7 @@ from flask import render_template
 from flask import redirect
 from flask import url_for
 from flask import session as login_session
+from flask import flash
 
 from catalog import app
 from catalog.models import get_user_id, get_user_info, create_user
@@ -38,6 +39,7 @@ def login_required(func):
     @wraps(func)
     def login_required_route(*args, **kargs):
         if 'username' not in login_session:
+            flash(message = "You are not authorized to access this page. Please login.", category = "info")
             return redirect('/login')
         return func(*args, **kargs)
     return login_required_route
@@ -144,6 +146,8 @@ def google_connect():
         login_session['user_id'] = user_id
         print "Welcome back old user!"
 
+    flash(message = "You are now logged in as %s" % login_session['username'], category = "success")
+
     output = '<h1>Welcome, ' + login_session['username'] + '!</h1>'
     output += '<p>' + login_session['email'] + '</p>'
     output += '<img src="' + login_session['picture'] + '" style="width: 200px; height: 200px; border-radius: 100px; -webkit-border-radius: 100px; -moz-border-radius: 100px;">'
@@ -168,6 +172,7 @@ def google_disconnect():
     if result['status'] == '200':
         # Reset the user's session.
         login_session.clear()
+        flash(message = "You are now logged out.", category = "success")
         response = make_response(json.dumps('Successfully disconnected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
