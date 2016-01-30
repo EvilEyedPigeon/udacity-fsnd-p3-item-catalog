@@ -89,7 +89,7 @@ def recent_atom_feed():
     for item in items:
         item_url = url_for('api.view_item', item_id = item.id)
         feed.add(title = item.name,
-                 content = unicode(item.description),
+                 content = unicode(item.name + " (" + item.category.name + "): " + item.description),
                  content_type = 'text',
                  author = item.user.name,
                  url = make_external(item_url),
