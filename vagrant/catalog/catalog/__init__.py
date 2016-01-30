@@ -21,12 +21,13 @@ DBSession = sessionmaker(bind = engine)
 db = DBSession()
 
 # Import modules
-import catalog.views
 import catalog.models
 
 # Register blueprints
+from views.api import api
 from views.auth import auth
 from views.data import data
 
+app.register_blueprint(api)
 app.register_blueprint(auth)
 app.register_blueprint(data)

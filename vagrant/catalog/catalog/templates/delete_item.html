@@ -5,15 +5,15 @@
 <h1>Delete item: {{ item.name }}</h1>
 
 <p>
-    <a class="col" href="{{ url_for('view_catalog') }}"><span class="glyphicon glyphicon-home"></span> Catalog home</a>
+    <a class="col" href="{{ url_for('api.view_catalog') }}"><span class="glyphicon glyphicon-home"></span> Catalog home</a>
     &nbsp;|&nbsp;
-    <a class="col" href="{{ url_for('view_category', category_id = item.category_id) }}"><span class="glyphicon glyphicon-folder-close"></span> Category home</a>
+    <a class="col" href="{{ url_for('api.view_category', category_id = item.category_id) }}"><span class="glyphicon glyphicon-folder-close"></span> Category home</a>
     &nbsp;|&nbsp;
     <a class="col" href="{{ url_for('data.view_item_json', item_id = item.id) }}"><span class="glyphicon glyphicon-download-alt"></span> Item JSON</a>
     &nbsp;|&nbsp;
-    <a class="col" href="{{ url_for('view_item', item_id = item.id) }}"><span class="glyphicon glyphicon-file"></span> View item</a>
+    <a class="col" href="{{ url_for('api.view_item', item_id = item.id) }}"><span class="glyphicon glyphicon-file"></span> View item</a>
     &nbsp;|&nbsp;
-    <a class="col" href="{{ url_for('edit_item', item_id = item.id) }}"><span class="glyphicon glyphicon-pencil"></span> Edit item</a>
+    <a class="col" href="{{ url_for('api.edit_item', item_id = item.id) }}"><span class="glyphicon glyphicon-pencil"></span> Edit item</a>
 </p>
 
 {% endblock %}
@@ -21,7 +21,7 @@
 
 {% block content %}
 
-<form method="POST" enctype="multipart/form-data" action="{{ url_for('delete_item', item_id = item.id) }}">
+<form method="POST" enctype="multipart/form-data" action="{{ url_for('api.delete_item', item_id = item.id) }}">
     <div class="row">
         <div class="col-sm-6">
             <dl class="dl-horizontal">
@@ -36,7 +36,7 @@
                     {% endif %}
                     </dd>
                 <dt>Category:</dt>
-                    <dd><a href="{{ url_for('view_category', category_id = item.category_id) }}">{{ item.category.name }}</a></dd>
+                    <dd><a href="{{ url_for('api.view_category', category_id = item.category_id) }}">{{ item.category.name }}</a></dd>
                 <dt>Created by:</dt>
                     <dd>{{ item.user.name }}</dd>
                 <dt>Created on:</dt>
@@ -50,7 +50,7 @@
         </div>
     </div>
     <input type="submit" class="btn btn-danger btn-block" value="Delete"/>
-    <a class="btn btn-default btn-block" href="{{ url_for('view_item', item_id = item.id) }}">Cancel</a><br/>
+    <a class="btn btn-default btn-block" href="{{ url_for('api.view_item', item_id = item.id) }}">Cancel</a><br/>
 </form>
 
 {% endblock %}

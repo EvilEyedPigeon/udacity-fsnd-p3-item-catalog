@@ -5,7 +5,7 @@
 <h1>New item</h1>
 
 <p>
-    <a class="col" href="{{ url_for('view_catalog') }}"><span class="glyphicon glyphicon-home"></span> Catalog home</a>
+    <a class="col" href="{{ url_for('api.view_catalog') }}"><span class="glyphicon glyphicon-home"></span> Catalog home</a>
 </p>
 
 {% endblock %}
@@ -14,13 +14,13 @@
 {% block content %}
 
 {% from "_form_helpers.html" import render_field %}
-<form method="POST" enctype="multipart/form-data" action="{{ url_for('new_item') }}">
+<form method="POST" enctype="multipart/form-data" action="{{ url_for('api.new_item') }}">
     {{ render_field(form.name) }}
     {{ render_field(form.description, rows = 5) }}
     {{ render_field(form.category_id) }}
     {{ render_field(form.image) }}
     <input type="submit" class="btn btn-primary btn-block" value="Save"/>
-    <a class="btn btn-default btn-block" href="{{ url_for('view_catalog') }}">Cancel</a><br/>
+    <a class="btn btn-default btn-block" href="{{ url_for('api.view_catalog') }}">Cancel</a><br/>
 </form>
 
 {% endblock %}

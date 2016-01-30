@@ -1,4 +1,4 @@
-"""This module includes routes for getting data from the app.
+"""This module includes routes for getting data in special formats from the app.
 
 It includes endpoints for getting catalog data in JSON format, and Atom feeds.
 """
@@ -87,7 +87,7 @@ def recent_atom_feed():
         feed_url = request.url, url = request.url_root)
     items = db.query(Item).order_by(Item.updated.desc()).limit(ATOM_FEED_SIZE).all()
     for item in items:
-        item_url = url_for('view_item', item_id = item.id)
+        item_url = url_for('api.view_item', item_id = item.id)
         feed.add(title = item.name,
                  content = unicode(item.description),
                  content_type = 'text',
