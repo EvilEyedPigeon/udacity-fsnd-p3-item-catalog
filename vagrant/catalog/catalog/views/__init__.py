@@ -102,12 +102,14 @@ def new_item():
 def edit_item(item_id):
     """Edit an item."""
     item = db.query(Item).filter_by(id = item_id).one()
-    if request.method != 'POST':
-        categories = db.query(Category).order_by(Category.name).all() # sort alphabetically
-        return render_template('edit_item.html', item = item, categories = categories)
+    form = ItemForm(request.form, item)
+    categories = db.query(Category).order_by(Category.name).all() # sort alphabetically
+    form.category_id.choices = [(c.id, c.name) for c in categories]
+    if request.method != 'POST' or not form.validate():
+        return render_template('edit_item.html', form = form, item = item)
 
     # get image file
-    form_file = request.files['image']
+    form_file = request.files[form.image.name]
     img_filename = None
     if form_file:
         filename = secure_filename(form_file.filename)
@@ -116,9 +118,9 @@ def edit_item(item_id):
         img_filename = filename
 
     # edit item
-    item.name = request.form['name']
-    item.description = request.form['description']
-    item.category_id = request.form['category_id']
+    item.name = form.name.data
+    item.description = form.description.data
+    item.category_id = form.category_id.data
     # only replace image if new image is uploaded
     if img_filename:
         item.image = img_filename
@@ -135,8 +137,7 @@ def delete_item(item_id):
     """Delete an item."""
     item = db.query(Item).filter_by(id = item_id).one()
     if request.method != 'POST':
-        categories = db.query(Category).order_by(Category.name).all() # sort alphabetically
-        return render_template('delete_item.html', item = item, categories = categories)
+        return render_template('delete_item.html', item = item)
     db.delete(item)
     db.commit()
 
