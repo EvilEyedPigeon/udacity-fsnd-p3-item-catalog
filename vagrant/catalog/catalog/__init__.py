@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 
 from sqlalchemy import create_engine
@@ -6,6 +8,11 @@ from sqlalchemy.orm import sessionmaker
 from database_setup import Base, User, Category, Item
 
 app = Flask(__name__)
+
+# Configuration
+app_dir = os.path.abspath(os.path.dirname(__file__))
+UPLOAD_FOLDER = os.path.join(app_dir, 'uploads')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Connect to database and create database session
 engine = create_engine('sqlite:///item_catalog.db')

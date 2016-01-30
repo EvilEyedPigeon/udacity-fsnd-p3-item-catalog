@@ -13,27 +13,12 @@
 
 {% block content %}
 
+{% from "_form_helpers.html" import render_field %}
 <form method="POST" enctype="multipart/form-data" action="{{ url_for('new_item') }}">
-    <div class="form-group">
-        <label for="name">Name:</label>
-        <input class="form-control" type="text" id="name" name="name" size="50"/>
-    </div>
-    <div class="form-group">
-        <label for="description">Description:</label>
-        <textarea class="form-control" id="description" name="description" rows="5" cols="50"></textarea>
-    </div>
-    <div class="form-group">
-        <label for="category">Category:</label>
-        <select class="form-control" id="category" name="category_id">
-            {% for c in categories %}
-            <option value="{{ c.id }}">{{ c.name }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="image">Image:</label>
-        <input class="form-control" type="file" name="image"/><br/>
-    </div>
+    {{ render_field(form.name) }}
+    {{ render_field(form.description, rows = 5) }}
+    {{ render_field(form.category_id) }}
+    {{ render_field(form.image) }}
     <input type="submit" class="btn btn-primary btn-block" value="Save"/>
     <a class="btn btn-default btn-block" href="{{ url_for('view_catalog') }}">Cancel</a><br/>
 </form>

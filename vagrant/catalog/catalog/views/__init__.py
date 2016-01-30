@@ -16,9 +16,10 @@ from flask import jsonify
 from flask import session
 from flask import flash
 
+from database_setup import Base, User, Category, Item
 from catalog import app
 from catalog import db
-from database_setup import Base, User, Category, Item
+from catalog.forms.item import ItemForm
 
 from auth import login_required
 
@@ -67,12 +68,14 @@ def view_item(item_id):
 @login_required
 def new_item():
     """Create new item."""
-    if request.method != 'POST':
-        categories = db.query(Category).order_by(Category.name).all() # sort alphabetically
-        return render_template('new_item.html', categories = categories)
+    form = ItemForm(request.form)
+    categories = db.query(Category).order_by(Category.name).all() # sort alphabetically
+    form.category_id.choices = [(c.id, c.name) for c in categories]
+    if request.method != 'POST' or not form.validate():
+        return render_template('new_item.html', form = form)
 
     # get image file
-    form_file = request.files['image']
+    form_file = request.files[form.image.name]
     img_filename = None
     if form_file:
         filename = secure_filename(form_file.filename)
@@ -82,9 +85,9 @@ def new_item():
 
     # create item
     new_item = Item(
-        name = request.form['name'],
-        description = request.form['description'],
-        category_id = request.form['category_id'],
+        name = form.name.data,
+        description = form.description.data,
+        category_id = form.category_id.data,
         image = img_filename,
         user_id = session['user_id'])
     db.add(new_item)
@@ -153,11 +156,6 @@ import random
 import uuid
 from werkzeug import secure_filename
 from flask import send_from_directory
-
-app_dir = os.path.abspath(os.path.dirname(__file__))
-UPLOAD_FOLDER = os.path.join(app_dir, 'uploads')
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
 
 def generate_random_string():
     """Generate a random string with alphabetic characters and digits."""
