@@ -24,7 +24,6 @@ TODO
 - Add image to items
 - Show message when trying to view category or item that does not exist
 - Prevent CSRF using token
-- Add form validation
 - Cleanup Google sign-in
 - Use blueprints to organize project
 
@@ -40,6 +39,7 @@ Done
 - Add Atom feed with recent items
 - Require login to add, edit, and delete items
 - Add flash messages
+- Form validation using WTForms
 
 Questions
 ---------
@@ -55,6 +55,8 @@ Things to keep in mind
 Usage
 -----
 
+- Install Flask-WTF (WTForms)
+  - https://flask-wtf.readthedocs.org/en/latest/install.html
 - Run database_setup.py
 - Run populate_database.py
 - Download google client secret
