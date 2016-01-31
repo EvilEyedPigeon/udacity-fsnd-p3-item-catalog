@@ -1,0 +1,24 @@
+{% extends "_main.html" %}
+
+{% block page_header %}
+
+<h1>User: {{ user.name }}</h1>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row text-center">
+     <dl class="list-unstyled">
+        <dt>Name:</dt>
+            <dd>{{ user.name }}</dd>
+        <dt>Email:</dt>
+            <dd>{{ user.email }}</dd>
+    </dl>
+</div>
+<div class="row text-center">
+    <img class="img-circle" width="200" src="{{ user.picture }}">
+</div>
+
+{% endblock %}

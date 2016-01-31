@@ -168,6 +168,19 @@ def delete_item(item_id):
 
 
 ################################################################################
+# User info
+################################################################################
+
+@api.route("/user/profile/")
+@login_required
+def user_profile():
+    """View current user's profile page."""
+    user_id = session["user_id"]
+    user = db.query(User).filter_by(id = user_id).one()
+    return render_template("user.html", user = user)
+
+
+################################################################################
 # Image upload
 ################################################################################
 

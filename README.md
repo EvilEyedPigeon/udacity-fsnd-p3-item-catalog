@@ -41,6 +41,7 @@ Done
 - Only author can edit or delete an item
 - Add flash messages
 - Form validation using WTForms
+- View user profile (logged in user can see it's own profile)
 
 Questions
 ---------
