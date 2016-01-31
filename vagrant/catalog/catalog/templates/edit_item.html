@@ -12,8 +12,10 @@
     <a class="col" href="{{ url_for('data.view_item_json', item_id = item.id) }}"><span class="glyphicon glyphicon-download-alt"></span> Item JSON</a>
     &nbsp;|&nbsp;
     <a class="col" href="{{ url_for('api.view_item', item_id = item.id) }}"><span class="glyphicon glyphicon-file"></span> View item</a>
+    {% if item.user_id == session["user_id"] %}
     &nbsp;|&nbsp;
     <a class="col" href="{{ url_for('api.delete_item', item_id = item.id) }}"><span class="glyphicon glyphicon-trash"></span> Delete item</a>
+    {% endif %}
 </p>
 
 {% endblock %}
