@@ -71,9 +71,12 @@ def view_item(item_id):
 @login_required
 def new_item():
     """Create new item."""
+    # populate form
     form = ItemForm(request.form)
     categories = db.query(Category).order_by(Category.name).all() # sort alphabetically
     form.category_id.choices = [(c.id, c.name) for c in categories]
+
+    # display and validate form    
     if request.method != 'POST' or not form.validate():
         return render_template('new_item.html', form = form)
 
@@ -105,9 +108,18 @@ def new_item():
 def edit_item(item_id):
     """Edit an item."""
     item = db.query(Item).filter_by(id = item_id).one()
+
+    # only author can edit item
+    if item.user_id != session['user_id']:
+        flash(message = "You are not allowed to update this item", category = "error")
+        return render_template("item.html", item = item)
+
+    # populate form
     form = ItemForm(request.form, item)
     categories = db.query(Category).order_by(Category.name).all() # sort alphabetically
     form.category_id.choices = [(c.id, c.name) for c in categories]
+
+    # display and validate form    
     if request.method != 'POST' or not form.validate():
         return render_template('edit_item.html', form = form, item = item)
 
@@ -139,6 +151,12 @@ def edit_item(item_id):
 def delete_item(item_id):
     """Delete an item."""
     item = db.query(Item).filter_by(id = item_id).one()
+
+    # only author can edit item
+    if item.user_id != session['user_id']:
+        flash(message = "You are not allowed to remove this item", category = "error")
+        return render_template("item.html", item = item)
+
     if request.method != 'POST':
         return render_template('delete_item.html', item = item)
     db.delete(item)

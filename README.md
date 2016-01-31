@@ -38,6 +38,7 @@ Done
 - Add image to items (file upload)
 - Add Atom feed with recent items
 - Require login to add, edit, and delete items
+- Only author can edit or delete an item
 - Add flash messages
 - Form validation using WTForms
 
