@@ -8,6 +8,7 @@ from flask import Blueprint
 from flask import flash
 from flask import redirect
 from flask import render_template
+from flask import request
 from flask import session as login_session
 from flask import url_for
 
@@ -30,7 +31,18 @@ def clearSession():
 
 @auth.route("/login/")
 def login():
-    return render_template("auth/login.html")
+    """Show login page.
+
+    Request arguments:
+        next:
+            The url to redirect to after login.
+            If not specified, redirect to the catalog home page.
+    """
+    if "next" in request.args:
+        next = request.args["next"]
+    else:
+        next = url_for("api.view_catalog")
+    return render_template("auth/login.html", next = next)
 
 @auth.route("/logout/")
 def logout():
@@ -55,7 +67,7 @@ def login_required(func):
     def login_required_route(*args, **kargs):
         if 'username' not in login_session:
             flash(message = "You are not authorized to access this page. Please login.", category = "info")
-            return redirect(url_for('auth.login'))
+            return redirect(url_for('auth.login', next = request.url)) # save url to redirect after login
         return func(*args, **kargs)
     return login_required_route
 
