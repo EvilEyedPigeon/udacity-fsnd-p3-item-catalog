@@ -177,7 +177,9 @@ def user_profile():
     """View current user's profile page."""
     user_id = session["user_id"]
     user = db.query(User).filter_by(id = user_id).one()
-    return render_template("user.html", user = user)
+    # sort user items alphabetically 
+    items = db.query(Item).filter_by(user_id = user_id).order_by(Item.name).all()
+    return render_template("user.html", user = user, items = items)
 
 
 ################################################################################
