@@ -171,7 +171,7 @@ def google_connect():
 
     output = '<h1>Welcome, ' + login_session['username'] + '!</h1>'
     output += '<p>' + login_session['email'] + '</p>'
-    output += '<img src="' + login_session['picture'] + '" style="width: 200px; height: 200px; border-radius: 100px; -webkit-border-radius: 100px; -moz-border-radius: 100px;">'
+    output += '<img src="' + login_session['picture'] + '" class="img-circle" width="200">'
     return output
 
 

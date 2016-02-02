@@ -20,17 +20,19 @@
  -->
 
 <div class="text-center">
-
-<!-- Google sign-in button -->
-<!-- Use an image that follows the branding guidelines in a real app -->
-<button id="g-signin-button">Sign in with Google</button>
-<script>
-  $('#g-signin-button').click(function() {
-    auth2.grantOfflineAccess({'redirect_uri': 'postmessage'}).then(signInCallback);
-  });
-</script>
-<div id="result"></div>
-
+  <div class="row">
+    <!-- Google sign-in button -->
+    <!-- Use an image that follows the branding guidelines in a real app -->
+    <button id="g-signin-button">Sign in with Google</button>
+    <script>
+      $('#g-signin-button').click(function() {
+        auth2.grantOfflineAccess({'redirect_uri': 'postmessage'}).then(signInCallback);
+      });
+    </script>
+  </div>
+  <div class="row">
+    <div id="result"></div>
+  </div>
 </div>
 
 
@@ -51,7 +53,7 @@ function signInCallback(authResult) {
       success: function(result) {
         // Handle or verify the server response.
         if(result) {
-            $('#result').html('Login Successful!</br>' + result + '</br>Redirecting...');
+            $('#result').html('<p>Login Successful!</p>' + result + '<p>Redirecting...</p>');
             setTimeout(function() {
                 window.location.href = '{{ next }}'
             }, 5000)
