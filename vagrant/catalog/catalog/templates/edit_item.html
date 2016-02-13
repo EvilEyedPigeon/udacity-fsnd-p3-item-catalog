@@ -23,8 +23,10 @@
 
 {% block content %}
 
+{% from "_form_helpers.html" import render_csrf_field %}
 {% from "_form_helpers.html" import render_field %}
 <form method="POST" enctype="multipart/form-data" action="{{ url_for('api.edit_item', item_id = item.id) }}">
+    {{ render_csrf_field(form) }}
     <div class="row">
         <div class="col-sm-6">
             {{ render_field(form.name) }}
