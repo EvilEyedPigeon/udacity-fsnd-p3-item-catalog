@@ -11,3 +11,15 @@
     {% endif %}
   </div>
 {% endmacro %}
+
+
+{% macro render_csrf_field(form) %}
+  <div class="form-group">
+    {{ form.csrf_token }}
+    {% if form.csrf_token.errors %}
+        <ul class="errors">
+          <li>Invalid CSRF token!</li>
+        </ul>
+    {% endif %}
+  </div>
+{% endmacro %}

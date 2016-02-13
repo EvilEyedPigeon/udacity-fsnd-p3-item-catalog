@@ -20,6 +20,7 @@ from flask import url_for
 from database_setup import Base, User, Category, Item
 from catalog import app
 from catalog import db
+from catalog.forms import CSRFForm
 from catalog.forms.item import ItemForm
 
 from auth import login_required
@@ -119,7 +120,7 @@ def edit_item(item_id):
     categories = db.query(Category).order_by(Category.name).all() # sort alphabetically
     form.category_id.choices = [(c.id, c.name) for c in categories]
 
-    # display and validate form    
+    # display and validate form
     if request.method != 'POST' or not form.validate():
         return render_template('edit_item.html', form = form, item = item)
 
@@ -152,13 +153,19 @@ def delete_item(item_id):
     """Delete an item."""
     item = db.query(Item).filter_by(id = item_id).one()
 
-    # only author can edit item
+    # only author can delete item
     if item.user_id != session['user_id']:
         flash(message = "You are not allowed to remove this item", category = "error")
         return render_template("item.html", item = item)
 
-    if request.method != 'POST':
-        return render_template('delete_item.html', item = item)
+    # populate form - just a base form here for csrf validation
+    form = CSRFForm(request.form)
+
+    # display and validate form
+    if request.method != 'POST' or not form.validate():
+        return render_template('delete_item.html', form = form, item = item)
+
+    # delete the item
     db.delete(item)
     db.commit()
 

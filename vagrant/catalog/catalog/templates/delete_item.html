@@ -23,7 +23,9 @@
 
 {% block content %}
 
+{% from "_form_helpers.html" import render_csrf_field %}
 <form method="POST" enctype="multipart/form-data" action="{{ url_for('api.delete_item', item_id = item.id) }}">
+    {{ render_csrf_field(form) }}
     <div class="row">
         <div class="col-sm-6">
             <dl class="dl-horizontal">

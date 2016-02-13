@@ -1,6 +1,8 @@
+from catalog.forms import CSRFForm
+
 from wtforms import Form, TextField, TextAreaField, SelectField, FileField, validators
 
-class ItemForm(Form):
+class ItemForm(CSRFForm):
 
     name = TextField("Name", [validators.Required(), validators.Length(min = 5, max = 120)])
 
