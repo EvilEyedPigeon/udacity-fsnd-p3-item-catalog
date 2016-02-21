@@ -1,8 +1,10 @@
-from catalog.forms import CSRFForm
+from catalog.forms import CSRFForm, ImageFileValidator
 
-from wtforms import Form, TextField, TextAreaField, SelectField, FileField, validators
+from wtforms import Form, TextField, TextAreaField, SelectField, FileField
+from wtforms import validators, ValidationError
 
 class ItemForm(CSRFForm):
+    """Form for creating and editing items."""
 
     name = TextField("Name", [validators.Required(), validators.Length(min = 5, max = 120)])
 
@@ -10,4 +12,4 @@ class ItemForm(CSRFForm):
 
     category_id = SelectField("Category", coerce = int)
 
-    image = FileField("Image")
+    image = FileField("Image", [ImageFileValidator()])

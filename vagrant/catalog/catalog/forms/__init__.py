@@ -1,9 +1,11 @@
 from catalog import app
 
+from flask import request
 from flask import session
 
-from wtforms import Form
+from wtforms import Form, ValidationError
 from wtforms.csrf.session import SessionCSRF
+
 
 class BaseForm(Form):
     """Base form for the application. Nothing special here for now..."""
@@ -25,3 +27,27 @@ class CSRFForm(BaseForm):
         @property
         def csrf_context(self):
             return session
+
+
+class ImageFileValidator(object):
+    """Validates that a form file, if present, is an image file.
+
+    This only does a basic check of the file extension.
+    It does not check the actual content of the file.
+    """
+
+    def __init__(self, valid_extensions = app.config['ALLOWED_IMAGE_EXTENSIONS'], message = None):
+        self.valid_extensions = valid_extensions
+        if not message:
+            message = u'Invalid file extension.'
+        self.message = message
+
+    def __call__(self, form, field):
+        form_file = request.files[field.name]
+        if form_file and not self.allowed_file(form_file):
+            raise ValidationError(self.message)
+
+    def allowed_file(self, file):
+        filename = file.filename
+        return '.' in filename and \
+                filename.rsplit('.', 1)[1] in self.valid_extensions

@@ -11,9 +11,9 @@ app = Flask(__name__)
 
 # Configuration
 app_dir = os.path.abspath(os.path.dirname(__file__))
-UPLOAD_FOLDER = os.path.join(app_dir, 'uploads')
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['CSRF_SECRET_KEY'] = 'csfr_super_secret_key'
+app.config['UPLOAD_FOLDER'] = os.path.join(app_dir, 'uploads')
+app.config['ALLOWED_IMAGE_EXTENSIONS'] = set(['jpg', 'jpeg', 'png', 'gif'])
 
 # Connect to database and create database session
 engine = create_engine('sqlite:///item_catalog.db')
@@ -28,7 +28,6 @@ import catalog.models
 from views.api import api
 from views.auth import auth
 from views.data import data
-
 app.register_blueprint(api)
 app.register_blueprint(auth)
 app.register_blueprint(data)
