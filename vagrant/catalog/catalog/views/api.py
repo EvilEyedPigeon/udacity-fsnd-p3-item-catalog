@@ -43,7 +43,7 @@ def view_catalog():
     items = db.query(Item).order_by(Item.name).all()
     latest_items = db.query(Item).order_by(Item.updated.desc()) \
         .limit(LATEST_ITEMS_TO_SHOW).all()
-    return render_template("catalog.html", 
+    return render_template("api/catalog.html", 
         categories = categories,
         items = items,
         latest_items = latest_items)
@@ -54,14 +54,14 @@ def view_category(category_id):
     """View a specific category."""
     category = db.query(Category).filter_by(id = category_id).one()
     items = db.query(Item).filter_by(category_id = category.id)
-    return render_template("category.html", category = category, items = items)
+    return render_template("api/category.html", category = category, items = items)
 
 
 @api.route("/catalog/item/<int:item_id>/")
 def view_item(item_id):
     """View a specific item."""
     item = db.query(Item).filter_by(id = item_id).one()
-    return render_template("item.html", item = item)
+    return render_template("api/item.html", item = item)
 
 
 ################################################################################
@@ -79,7 +79,7 @@ def new_item():
 
     # display and validate form    
     if request.method != 'POST' or not form.validate():
-        return render_template('new_item.html', form = form)
+        return render_template('api/new_item.html', form = form)
 
     # get image file
     form_file = request.files[form.image.name]
@@ -113,7 +113,7 @@ def edit_item(item_id):
     # only author can edit item
     if item.user_id != session['user_id']:
         flash(message = "You are not allowed to update this item", category = "error")
-        return render_template("item.html", item = item)
+        return render_template("api/item.html", item = item)
 
     # populate form
     form = ItemForm(request.form, item)
@@ -122,7 +122,7 @@ def edit_item(item_id):
 
     # display and validate form
     if request.method != 'POST' or not form.validate():
-        return render_template('edit_item.html', form = form, item = item)
+        return render_template('api/edit_item.html', form = form, item = item)
 
     # get image file
     form_file = request.files[form.image.name]
@@ -156,14 +156,14 @@ def delete_item(item_id):
     # only author can delete item
     if item.user_id != session['user_id']:
         flash(message = "You are not allowed to remove this item", category = "error")
-        return render_template("item.html", item = item)
+        return render_template("api/item.html", item = item)
 
     # populate form - just a base form here for csrf validation
     form = CSRFForm(request.form)
 
     # display and validate form
     if request.method != 'POST' or not form.validate():
-        return render_template('delete_item.html', form = form, item = item)
+        return render_template('api/delete_item.html', form = form, item = item)
 
     # delete the item
     db.delete(item)
@@ -186,7 +186,7 @@ def user_profile():
     user = db.query(User).filter_by(id = user_id).one()
     # sort user items alphabetically 
     items = db.query(Item).filter_by(user_id = user_id).order_by(Item.name).all()
-    return render_template("user.html", user = user, items = items)
+    return render_template("api/user.html", user = user, items = items)
 
 
 ################################################################################
