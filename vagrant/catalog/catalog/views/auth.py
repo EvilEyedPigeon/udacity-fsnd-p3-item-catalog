@@ -18,13 +18,6 @@ from catalog.models import get_user_id, get_user_info, create_user
 auth = Blueprint('auth', __name__)
 
 
-# Temporary, for debugging.
-@auth.route('/clearSession')
-def clearSession():
-    login_session.clear()
-    return "Session cleared"
-
-
 ################################################################################
 # Aurthorization (login/logout)
 ################################################################################
@@ -85,9 +78,10 @@ from oauth2client.client import OAuth2Credentials
 
 @auth.route("/google_connect", methods = ["POST"])
 def google_connect():
+    """Sign in user with Google account."""
+
     # Obtain authorization code
     code = request.data
-    print("auth_code: " + code)
 
     # Upgrade the authorization code into a credentials object.
     try:
@@ -100,18 +94,15 @@ def google_connect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
-    # Check that the access token is valid.
+    # Check that the access token is valid. If there is an error in the token, abort.
     access_token = credentials.access_token
-    print("access_token: " + access_token)
     url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' % access_token)
     h = httplib2.Http()
     result = json.loads(h.request(url, 'GET')[1])
-    # If there was an error in the access token info, abort.
     if result.get('error') is not None:
         response = make_response(
             json.dumps(result.get('error')), 500)
         response.headers['Content-Type'] = 'application/json'
-        print "response:", response
         return response
 
     # Verify that the access token is used for the intended user.
@@ -137,7 +128,7 @@ def google_connect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
-    # Everything OK. Now load user info and add things to session...
+    # Everything OK. Now load user info and add store it in the session...
 
     # Store the access token in the session for later use.
     login_session['credentials'] = credentials.access_token
@@ -147,10 +138,9 @@ def google_connect():
     userinfo_url = "https://www.googleapis.com/oauth2/v1/userinfo"
     params = {'access_token': credentials.access_token, 'alt': 'json'}
     user_info = requests.get(userinfo_url, params = params)
-
     data = user_info.json()
-    print("user_info: " + str(data))
 
+    # Store user info in session.
     login_session['provider'] = 'google'
     login_session['username'] = data['name']
     login_session['picture'] = data['picture']
@@ -162,10 +152,8 @@ def google_connect():
     if not user_id:
         user_id = create_user(login_session)
         login_session['user_id'] = user_id
-        print "Welcome new user!"
     else:
         login_session['user_id'] = user_id
-        print "Welcome back old user!"
 
     flash(message = "You are now logged in as %s" % login_session['username'], category = "success")
 
@@ -177,6 +165,8 @@ def google_connect():
 
 @auth.route('/google_disconnect')
 def google_disconnect():
+    """Sign out user with Google account."""
+
     # Only disconnect a connected user.
     access_token = login_session.get('credentials')
     if access_token is None:
@@ -184,22 +174,19 @@ def google_disconnect():
             json.dumps('Current user not connected.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
-    print "access_token:", access_token
     url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
-    print "result:", result
 
-    if result['status'] == '200':
-        # Reset the user's session.
-        login_session.clear()
-        flash(message = "You are now logged out.", category = "success")
-        return redirect(url_for('api.view_catalog'))
-    else:
+    if result['status'] != '200':
         # For whatever reason, the given token was invalid.
-        response = make_response(
-            json.dumps('Failed to revoke token for given user.', 400))
-        response.headers['Content-Type'] = 'application/json'
-        return response
+        # No need to do anything. User is still logged out.
+        print "Failed to revoke access token. It may have been experired or invalid for another reason. User logged out."
+
+    # Reset the user's session.
+    login_session.clear()
+
+    flash(message = "You are now logged out.", category = "success")
+    return redirect(url_for('api.view_catalog'))
 
 ################################################################################
