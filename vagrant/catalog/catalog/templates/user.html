@@ -2,7 +2,7 @@
 
 {% block page_header %}
 
-<h1>User: {{ user.name }}</h1>
+<h1>User profile</h1>
 
 {% endblock %}
 
@@ -24,7 +24,7 @@
     <div class="col-sm-6">
         <h2>Items</h2>
         <ul>
-        {% for i in user.items %}
+        {% for i in items %}
             <li>
                 <a href="{{ url_for('api.view_item', item_id = i.id) }}">{{ i.name }}</a>
                 <small>(<a href="{{ url_for('api.view_category', category_id = i.category.id) }}">{{ i.category.name }}</a>)</small>
