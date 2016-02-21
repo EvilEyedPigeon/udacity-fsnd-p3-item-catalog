@@ -5,7 +5,6 @@ This project is a simple web application that provides a list of items within se
 It uses third party authentication, and logged in users can add, edit, and delete their own items.
 
 Created using [Flask](http://flask.pocoo.org/) and [SQLAlchemy](http://www.sqlalchemy.org/).
-
 Initial [Vagrant](https://www.vagrantup.com/) config cloned from https://github.com/udacity/fullstack-nanodegree-vm
 
 
@@ -13,9 +12,9 @@ Basic features
 --------------
 
 - JSON endpoints: get the gatalog, all the items in one category, or a single item.
-- Categories and items stored on a database. ([SQLite](https://www.sqlite.org/))
+- Categories and items stored on a database ([SQLite](https://www.sqlite.org/)).
 - Third party authentication: using [Google sign-in](https://developers.google.com/identity/sign-in/web/).
-- All items are publicly visible.
+- All items are publicly visible. Home page shows list of categories, recent items, and all items.
 - Non authenticated users can browse the catalog, but cannot make any modifications.
 - Authenticated users can add, edit, and delete their own items.
 
@@ -44,7 +43,7 @@ Requirements
 
 This project includes a Vagrant environment including everything necessary. To use it, install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) and [Vagrant](https://www.vagrantup.com/downloads), and follow the project installation steps bellow.
 
-Alternatively, you may install a [Python](http://www.python.org/), [Flask](http://flask.pocoo.org/), [SQLAlchemy](http://www.sqlalchemy.org/), and other requirements. But note that this has not been tested, and you may have to follow additional steps or make changes to some of the files. If you want to do this, look at the '''vagrant/pg_config.sh''' file (note that some of the requirements there may be for other projects).
+Alternatively, you may install a [Python](http://www.python.org/), [Flask](http://flask.pocoo.org/), [SQLAlchemy](http://www.sqlalchemy.org/), and other requirements. But note that this has not been tested, and you may have to follow additional steps or make changes to some of the files. If you want to do this, look at the ```vagrant/pg_config.sh``` file (note that some of the requirements there may be for other projects).
 
 
 Usage
@@ -57,7 +56,7 @@ Run the application:
 $ python runserver.py
 ```
 
-Then point your browser to '''localhost:5000'''.
+Then point your browser to ```localhost:5000```.
 
 
 Installation
@@ -86,6 +85,7 @@ $ cd /vagrant/catalog
 4) Create the database.
 ```
 $ python database_setup.py
+```
 
 5) Populate the database.
 ```
