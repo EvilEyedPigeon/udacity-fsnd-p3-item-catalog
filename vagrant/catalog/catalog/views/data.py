@@ -3,7 +3,10 @@
 It includes endpoints for getting catalog data in JSON format, and Atom feeds.
 """
 
+from flask import abort
 from flask import Blueprint
+
+from sqlalchemy.orm.exc import NoResultFound
 
 from catalog import db
 from database_setup import User, Category, Item
@@ -30,7 +33,10 @@ def view_catalog_json():
 @data.route("/catalog/category-<int:category_id>.json")
 def view_category_json(category_id):
     """Category in json format."""
-    category = db.query(Category).filter_by(id = category_id).one()
+    try:
+        category = db.query(Category).filter_by(id = category_id).one()
+    except NoResultFound:
+        abort(404)
     items = db.query(Item).filter_by(category_id = category.id).all()
     return jsonify(category = category.serialize,
         items = [i.serialize for i in items])
@@ -38,7 +44,10 @@ def view_category_json(category_id):
 @data.route("/catalog/item-<int:item_id>.json")
 def view_item_json(item_id):
     """Item in json format."""
-    item = db.query(Item).filter_by(id = item_id).one()
+    try:
+        item = db.query(Item).filter_by(id = item_id).one()
+    except NoResultFound:
+        abort(404)
     return jsonify(item = item.serialize)
 
 @data.route('/users.json')

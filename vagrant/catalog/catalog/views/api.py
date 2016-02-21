@@ -7,6 +7,7 @@ import httplib2
 import requests
 import json
 
+from flask import abort
 from flask import Blueprint
 from flask import flash
 from flask import Flask
@@ -16,6 +17,8 @@ from flask import request
 from flask import render_template
 from flask import session
 from flask import url_for
+
+from sqlalchemy.orm.exc import NoResultFound
 
 from database_setup import Base, User, Category, Item
 from catalog import app
@@ -52,7 +55,10 @@ def view_catalog():
 @api.route("/catalog/category/<int:category_id>/")
 def view_category(category_id):
     """View a specific category."""
-    category = db.query(Category).filter_by(id = category_id).one()
+    try:
+        category = db.query(Category).filter_by(id = category_id).one()
+    except NoResultFound:
+        abort(404)
     items = db.query(Item).filter_by(category_id = category.id)
     return render_template("api/category.html", category = category, items = items)
 
@@ -60,7 +66,10 @@ def view_category(category_id):
 @api.route("/catalog/item/<int:item_id>/")
 def view_item(item_id):
     """View a specific item."""
-    item = db.query(Item).filter_by(id = item_id).one()
+    try:
+        item = db.query(Item).filter_by(id = item_id).one()
+    except NoResultFound:
+        abort(404)
     return render_template("api/item.html", item = item)
 
 
@@ -108,7 +117,10 @@ def new_item():
 @login_required
 def edit_item(item_id):
     """Edit an item."""
-    item = db.query(Item).filter_by(id = item_id).one()
+    try:
+        item = db.query(Item).filter_by(id = item_id).one()
+    except NoResultFound:
+        abort(404)
 
     # only author can edit item
     if item.user_id != session['user_id']:
@@ -151,7 +163,10 @@ def edit_item(item_id):
 @login_required
 def delete_item(item_id):
     """Delete an item."""
-    item = db.query(Item).filter_by(id = item_id).one()
+    try:
+        item = db.query(Item).filter_by(id = item_id).one()
+    except NoResultFound:
+        abort(404)
 
     # only author can delete item
     if item.user_id != session['user_id']:
