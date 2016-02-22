@@ -1,4 +1,5 @@
 import os
+import json
 
 from flask import Flask
 from flask import render_template
@@ -11,10 +12,15 @@ from database_setup import Base, User, Category, Item
 app = Flask(__name__)
 
 
+# Load client ids from config files
+app.config['GOOGLE_CLIENT_ID'] = json.loads(open('client_secret_google.json', 'r').read())['web']['client_id']
+
+
 # Configuration
 app_dir = os.path.abspath(os.path.dirname(__file__))
+app.config['SECRET_KEY'] = 'super_secret_key'
 app.config['CSRF_SECRET_KEY'] = 'csfr_super_secret_key'
-app.config['UPLOAD_FOLDER'] = os.path.join(app_dir, 'uploads')
+app.config['UPLOAD_FOLDER'] = os.path.join(app_dir, '..', 'uploads')
 app.config['ALLOWED_IMAGE_EXTENSIONS'] = set(['jpg', 'jpeg', 'png', 'gif'])
 
 

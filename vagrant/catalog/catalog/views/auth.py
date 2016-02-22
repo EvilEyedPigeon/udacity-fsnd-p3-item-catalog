@@ -114,7 +114,7 @@ def google_connect():
         return response
 
     # Verify that the access token is valid for this app.
-    if result['audience'] != app.config.google_client_id:
+    if result['audience'] != app.config['GOOGLE_CLIENT_ID']:
         response = make_response(
             json.dumps("Token's client ID does not match app's client ID."), 401)
         response.headers['Content-Type'] = 'application/json'

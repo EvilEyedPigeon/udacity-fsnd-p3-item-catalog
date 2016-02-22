@@ -15,7 +15,7 @@
             function start() {
               gapi.load('auth2', function() {
                 auth2 = gapi.auth2.init({
-                  client_id: '{{ config.google_client_id }}',
+                  client_id: '{{ config["GOOGLE_CLIENT_ID"] }}',
                   scope: 'profile email'
                 });
               });

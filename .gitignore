@@ -2,5 +2,7 @@
 vagrant/.vagrant/
 vagrant/catalog/item_catalog.db
 vagrant/catalog/client_secret_google.json
-vagrant/catalog/catalog/uploads/*.jpg
-vagrant/catalog/catalog/uploads/*.png
+vagrant/catalog/uploads/*.jpg
+vagrant/catalog/uploads/*.jpeg
+vagrant/catalog/uploads/*.png
+vagrant/catalog/uploads/*.gif
