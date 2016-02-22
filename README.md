@@ -11,9 +11,9 @@ Initial [Vagrant](https://www.vagrantup.com/) config cloned from https://github.
 Basic features
 --------------
 
-- JSON endpoints: get the gatalog, all the items in one category, or a single item.
-- Categories and items stored on a database ([SQLite](https://www.sqlite.org/)).
-- Third party authentication: using [Google sign-in](https://developers.google.com/identity/sign-in/web/).
+- JSON endpoints: get the catalog, all the items in one category, or a single item.
+- Categories and items stored in a database ([SQLite](https://www.sqlite.org/)).
+- Third party authentication using [Google sign-in](https://developers.google.com/identity/sign-in/web/).
 - All items are publicly visible. Home page shows list of categories, recent items, and all items.
 - Non authenticated users can browse the catalog, but cannot make any modifications.
 - Authenticated users can add, edit, and delete their own items.
@@ -22,7 +22,7 @@ Basic features
 Extra features
 --------------
 
-- Atom endpoint: get a feed with the latest items (created or updated).
+- Atom endpoint: feed with the latest items (created or updated).
 - Items can have an image uploaded.
 - Forms are validated using [WTForms](http://wtforms.readthedocs.org/en/latest/).
 - Adding, editing, and deleting items use tokens to prevent cross-site request forgeries (CSRF).
@@ -32,8 +32,8 @@ Extra features
 Things that would be nice / issues
 ----------------------------------
 
-- Allowing creation of new categories. Currently, only a set of preconfigured categories can be used.
-- Allowing the users to determine if items are visible to public or not.
+- Allowing creation of new categories. Currently, only a set of pre-configured categories can be used.
+- Allowing the users to determine if their items are visible to public or not.
 - Images are accessible to the public (as long as the user knows the file name).
 - Images are never deleted and it is possible for a new uploaded image to replace an existing one (file names have the date, time, and a randomly generated UUID, so this is unlikely).
 
@@ -92,7 +92,7 @@ $ python database_setup.py
 $ python populate_database.py
 ```
 
-This creates a set of predefined categories and sample items. You may edit this file to add different categories or skip adding sample items.
+This creates a set of predefined categories and sample items. You may want to edit this file to add different categories or skip adding sample items.
 
 5) Configure Google sign-in.
 
@@ -102,4 +102,4 @@ Follow the steps to create a [Google Developers Console project](https://develop
 
 6) Update app configuration (optional).
 
-You may want to update the configuration in ```runserver.py``` or ```catalog/__init__.py```.
+You may want to update the configuration in ```runserver.py``` or ```catalog/__init__.py```. Especially, you may want to ensure debug mode is disabled in ```runserver.py``` and update the secret keys in ```catalog/__init__.py```.
