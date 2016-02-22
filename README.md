@@ -3,8 +3,8 @@ Project 2: Item Catalog
 
 This project is a simple web application that provides a list of items within several categories.
 It uses third party authentication, and logged in users can add, edit, and delete their own items.
-
 Created using [Flask](http://flask.pocoo.org/) and [SQLAlchemy](http://www.sqlalchemy.org/).
+
 Initial [Vagrant](https://www.vagrantup.com/) config cloned from https://github.com/udacity/fullstack-nanodegree-vm
 
 
@@ -35,7 +35,7 @@ Things that would be nice / issues
 - Allowing creation of new categories. Currently, only a set of preconfigured categories can be used.
 - Allowing the users to determine if items are visible to public or not.
 - Images are accessible to the public (as long as the user knows the file name).
-- Images are never deleted and it is possible to have two images with the same name.
+- Images are never deleted and it is possible for a new uploaded image to replace an existing one (file names have the date, time, and a randomly generated UUID, so this is unlikely).
 
 
 Requirements
@@ -49,7 +49,7 @@ Alternatively, you may install a [Python](http://www.python.org/), [Flask](http:
 Usage
 -----
 
-To use the project, download and configure the application. [You will have to create your own Google application.] 
+To use the project, download and configure the application. You will have to create a Google Developers Console project and use your own client ID.
 
 Run the application:
 ```
@@ -94,9 +94,12 @@ $ python populate_database.py
 
 This creates a set of predefined categories and sample items. You may edit this file to add different categories or skip adding sample items.
 
-5) [Authentication configuration]
+5) Configure Google sign-in.
 
-TODO: Add details
+A client ID is not provided. If you want to test the application, you will have to use your own client ID.
 
-- Download google client secret
-  - Name it "client_secret_google.json" and place it in the catalog folder
+Follow the steps to create a [Google Developers Console project](https://developers.google.com/identity/sign-in/web/devconsole-project). Then go to the credentials tab and download the client ID as a JSON file. Copy the file to the ```catalog``` folder and rename it ```client_secret_google.json```.
+
+6) Update app configuration (optional).
+
+You may want to update the configuration in ```runserver.py``` or ```catalog/__init__.py```.
