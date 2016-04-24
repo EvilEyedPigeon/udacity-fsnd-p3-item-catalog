@@ -12,7 +12,7 @@ Basic features
 --------------
 
 - JSON endpoints: get the catalog, all the items in one category, or a single item.
-- Categories and items stored in a database ([SQLite](https://www.sqlite.org/)).
+- Categories and items stored in a database ([PostgreSQL](http://www.postgresql.org/)).
 - Third party authentication using [Google sign-in](https://developers.google.com/identity/sign-in/web/).
 - All items are publicly visible. Home page shows list of categories, recent items, and all items.
 - Non authenticated users can browse the catalog, but cannot make any modifications.

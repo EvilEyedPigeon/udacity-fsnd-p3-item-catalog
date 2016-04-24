@@ -128,6 +128,6 @@ class Item(Base):
 
 ##### create database #####
 
-engine = create_engine('sqlite:///item_catalog.db')
+engine = create_engine('postgresql:///item_catalog')
 
 Base.metadata.create_all(engine)

@@ -25,7 +25,7 @@ app.config['ALLOWED_IMAGE_EXTENSIONS'] = set(['jpg', 'jpeg', 'png', 'gif'])
 
 
 # Connect to database and create database session
-engine = create_engine('sqlite:///item_catalog.db')
+engine = create_engine('postgresql:///item_catalog')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind = engine)
 db = DBSession()
