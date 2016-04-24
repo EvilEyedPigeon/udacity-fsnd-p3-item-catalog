@@ -76,6 +76,9 @@ from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 from oauth2client.client import OAuth2Credentials
 
+import os
+from catalog import app_root
+
 @auth.route("/google_connect", methods = ["POST"])
 def google_connect():
     """Sign in user with Google account."""
@@ -85,7 +88,7 @@ def google_connect():
 
     # Upgrade the authorization code into a credentials object.
     try:
-        oauth_flow = flow_from_clientsecrets('client_secret_google.json', scope = '')
+        oauth_flow = flow_from_clientsecrets(os.path.join(app_root, 'client_secret_google.json'), scope = '')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:

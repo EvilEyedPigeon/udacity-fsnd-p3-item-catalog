@@ -3,32 +3,31 @@ import json
 
 from flask import Flask
 from flask import render_template
+from flask.ext.sqlalchemy import SQLAlchemy
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
-from database_setup import Base, User, Category, Item
+from database_setup import User, Category, Item
 
 app = Flask(__name__)
 
+# App root folder
+app_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 # Load client ids from config files
-app.config['GOOGLE_CLIENT_ID'] = json.loads(open('client_secret_google.json', 'r').read())['web']['client_id']
+client_secret = os.path.join(app_root, 'client_secret_google.json')
+app.config['GOOGLE_CLIENT_ID'] = json.loads(open(client_secret, 'r').read())['web']['client_id']
 
 
 # Configuration
-app_dir = os.path.abspath(os.path.dirname(__file__))
+app_root = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///item_catalog'
 app.config['SECRET_KEY'] = 'super_secret_key'
 app.config['CSRF_SECRET_KEY'] = 'csfr_super_secret_key'
-app.config['UPLOAD_FOLDER'] = os.path.join(app_dir, '..', 'uploads')
+app.config['UPLOAD_FOLDER'] = os.path.join(app_root, '..', 'uploads')
 app.config['ALLOWED_IMAGE_EXTENSIONS'] = set(['jpg', 'jpeg', 'png', 'gif'])
 
 
 # Connect to database and create database session
-engine = create_engine('postgresql:///item_catalog')
-Base.metadata.bind = engine
-DBSession = sessionmaker(bind = engine)
-db = DBSession()
+db = SQLAlchemy(app)
 
 
 # Register HTTP error handlers
