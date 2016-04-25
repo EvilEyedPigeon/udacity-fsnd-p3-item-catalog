@@ -20,9 +20,9 @@ from flask import url_for
 
 from sqlalchemy.orm.exc import NoResultFound
 
-from database_setup import Base, User, Category, Item
 from catalog import app
 from catalog import db
+from catalog.models import Base, User, Category, Item
 from catalog.forms import CSRFForm
 from catalog.forms.item import ItemForm
 

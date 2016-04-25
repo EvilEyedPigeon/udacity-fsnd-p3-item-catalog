@@ -9,7 +9,7 @@ from flask import Blueprint
 from sqlalchemy.orm.exc import NoResultFound
 
 from catalog import db
-from database_setup import User, Category, Item
+from catalog.models import User, Category, Item
 
 from auth import login_required
 

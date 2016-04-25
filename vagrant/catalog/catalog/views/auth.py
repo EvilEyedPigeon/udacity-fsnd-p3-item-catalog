@@ -13,7 +13,7 @@ from flask import session as login_session
 from flask import url_for
 
 from catalog import app
-from catalog.models import get_user_id, get_user_info, create_user
+from catalog.users import get_user_id, get_user_info, create_user
 
 auth = Blueprint('auth', __name__)
 

@@ -3,9 +3,13 @@ import json
 
 from flask import Flask
 from flask import render_template
-from flask.ext.sqlalchemy import SQLAlchemy
+# from flask.ext.sqlalchemy import SQLAlchemy
 
-from database_setup import User, Category, Item
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+from catalog.models import Base
+
 
 app = Flask(__name__)
 
@@ -18,16 +22,20 @@ app.config['GOOGLE_CLIENT_ID'] = json.loads(open(client_secret, 'r').read())['we
 
 
 # Configuration
-app_root = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///item_catalog'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///catalog'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'super_secret_key'
 app.config['CSRF_SECRET_KEY'] = 'csfr_super_secret_key'
-app.config['UPLOAD_FOLDER'] = os.path.join(app_root, '..', 'uploads')
+app.config['UPLOAD_FOLDER'] = os.path.join(app_root, 'uploads')
 app.config['ALLOWED_IMAGE_EXTENSIONS'] = set(['jpg', 'jpeg', 'png', 'gif'])
 
 
 # Connect to database and create database session
-db = SQLAlchemy(app)
+engine = create_engine('postgresql:///catalog')
+Base.metadata.bind = engine
+DBSession = sessionmaker(bind = engine)
+db = DBSession()
+# db = SQLAlchemy(app)
 
 
 # Register HTTP error handlers

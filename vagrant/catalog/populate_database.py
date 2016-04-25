@@ -1,12 +1,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
- 
-from database_setup import Base, User, Category, Item
 
-engine = create_engine('postgresql:///item_catalog')
-Base.metadata.bind = engine
-DBSession = sessionmaker(bind=engine)
-session = DBSession()
+from catalog import db
+from catalog.models import User, Category, Item
 
 
 # Utility functions
@@ -15,14 +11,14 @@ def add_items(category, item_names):
 	"""Add a list of items to a category."""
 	for name in item_names:
 		item = Item(name = name, category_id = category.id)
-		session.add(item)
-	session.commit()
+		db.add(item)
+	db.commit()
 
 def add_item(category, item):
     """Add an item to a category."""
     item.category_id = category.id
-    session.add(item)
-    session.commit()
+    db.add(item)
+    db.commit()
 
 
 # Sample user
@@ -31,25 +27,25 @@ user = User(name = "Peter Pan",
     email = "peter@neverlandmail.org",
     picture = "https://placehold.it/300x300.png?text=Peter+Pan")
 
-session.add(user)
-session.commit()
+db.add(user)
+db.commit()
 
 
 # Sample categories
 
 category1 = Category(name = "Books")
-session.add(category1)
+db.add(category1)
 
 category2 = Category(name = "Electronics")
-session.add(category2)
+db.add(category2)
 
 category3 = Category(name = "Food")
-session.add(category3)
+db.add(category3)
 
 category4 = Category(name = "Miscellaneous")
-session.add(category4)
+db.add(category4)
 
-session.commit()
+db.commit()
 
 
 # Sample items
