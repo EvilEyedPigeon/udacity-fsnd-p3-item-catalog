@@ -29,6 +29,14 @@ Extra features
 - View user profile: logged in users can see their own profiles and list of items.
 
 
+Screenshots
+-----------
+
+This is the home page (see more [here](/screenshots/)):
+
+![screenshot-1](/screenshots/item_catalog_screen_01.png?raw=true "Catalog home")
+
+
 Things that would be nice / issues
 ----------------------------------
 
